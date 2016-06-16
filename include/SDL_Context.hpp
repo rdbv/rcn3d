@@ -8,6 +8,8 @@
 #else
 #endif
 
+#include <GL/glew.h>
+
 #include "header_only/Math.hpp"
 
 #include <string>
@@ -38,8 +40,8 @@ auto build_SDL_errorstr = []() {
 /* SDL Window and Context settings */
 struct SDL_Settings {
     std::string windowName = "rcn3d";
-    rcn3d::Vec2 windowSize = rcn3d::Vec2(DEFAULT_WINDOW_X, DEFAULT_WINDOW_Y);
-    rcn3d::Vec2 windowPos  = rcn3d::Vec2(DEFAULT_WINDOW_XPOS, DEFAULT_WINDOW_XPOS);
+    glm::vec2 windowSize = glm::vec2(DEFAULT_WINDOW_X, DEFAULT_WINDOW_Y);
+    glm::vec2 windowPos = glm::vec2(DEFAULT_WINDOW_XPOS, DEFAULT_WINDOW_XPOS);
 };
 
 /* Whole SDL Context - Window and OpenGL context */

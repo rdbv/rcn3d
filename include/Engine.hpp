@@ -1,6 +1,7 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
+#include "../include/header_only/Math.hpp"
 #include "../include/SDL_Context.hpp"
 #include "../include/InputHandler.hpp"
 

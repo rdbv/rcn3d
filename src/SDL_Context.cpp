@@ -27,16 +27,16 @@ bool SDL_Context::initWindowSDL(SDL_Settings cSettings) {
         return false;
 
     // if windowPos < 0, window will be placed on screen center
-    auto xPos = cSettings.windowPos.x() < 0 ? SDL_WINDOWPOS_CENTERED : cSettings.windowPos.x();
-    auto yPos = cSettings.windowPos.y() < 0 ? SDL_WINDOWPOS_CENTERED : cSettings.windowPos.y();
+    auto xPos = cSettings.windowPos.x < 0 ? SDL_WINDOWPOS_CENTERED : cSettings.windowPos.x;
+    auto yPos = cSettings.windowPos.y < 0 ? SDL_WINDOWPOS_CENTERED : cSettings.windowPos.y;
 
     // create SDL window
     window = SDL_CreateWindow(
             cSettings.windowName.c_str(),
             xPos,
             yPos,
-            cSettings.windowSize.x(),
-            cSettings.windowSize.y(),
+            cSettings.windowSize.x,
+            cSettings.windowSize.y,
             SDL_WINDOW_OPENGL);
 
     // check errors
