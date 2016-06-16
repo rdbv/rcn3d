@@ -3,6 +3,7 @@
 
 #include "../include/header_only/Math.hpp"
 #include "../include/SDL_Context.hpp"
+#include "../include/ShaderProgram.hpp"
 #include "../include/InputHandler.hpp"
 
 namespace rcn3d {
