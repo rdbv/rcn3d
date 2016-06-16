@@ -20,9 +20,7 @@ InputHandler:
 
 # Other
 
-Matrix: test
-
-math_new:
-	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o bin/main
+window:
+	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o bin/main $(LINK_OBJ) -lGL -lGLEW -lSDL2
 
 Math: test
