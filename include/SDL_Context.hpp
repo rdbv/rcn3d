@@ -20,7 +20,7 @@
 
 #define DEFAULT_WINDOW_X 800
 #define DEFAULT_WINDOW_Y 600
-#define DEFAULT_WINDOW_XPOS WINDOW_CENTERED 
+#define DEFAULT_WINDOW_XPOS WINDOW_CENTERED
 #define DEFAULT_WINDOW_YPOS WINDOW_CENTERED
 
 namespace rcn3d {
@@ -45,7 +45,7 @@ struct SDL_Settings {
 };
 
 /* Whole SDL Context - Window and OpenGL context */
-class SDL_Context 
+class SDL_Context
 {
 public:
 
@@ -71,7 +71,7 @@ private:
     bool initWindowSDL(SDL_Settings);
     /* Set OpenGL settings */
     bool initGLContextSDL(SDL_Settings);
-   
+
     SDL_Window* window       = nullptr;
     SDL_GLContext glContext;
 };

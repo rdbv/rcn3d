@@ -6,16 +6,15 @@ GLfloat vx[] = {
     0.0f,  0.5f, 0.0f
 };
 
-int main() {
+int main( int argc, char *argv[] ) {
 
     rcn3d::Engine e;
     rcn3d::SDL_Settings set;
     set.windowPos = glm::vec2(1900, 0);
     e.context_SDL.initContext(set);
 
-    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs", 
+    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
                             "stuff/shaders/test0.fs");
-
     glViewport(0, 0, set.windowSize.x, set.windowSize.y);
 
     GLuint VBO, VAO;
@@ -54,6 +53,6 @@ int main() {
         e.context_SDL.swapBuffers();
     }
 
-    
+
 }
 
