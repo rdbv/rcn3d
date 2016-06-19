@@ -1,0 +1,13 @@
+#code::blocks
+*.cbp
+*.depend
+*.layout
+
+#libs
+*.dll
+*.so
+*.a
+
+#others
+*.o
+*.exe
