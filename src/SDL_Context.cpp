@@ -60,6 +60,9 @@ bool SDL_Context::initGLContextSDL(SDL_Settings cSettings) {
     glewExperimental = true;
     glewInit();
 
+    // TODO mv to renderer gl calls
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
     return true;
 }
 
