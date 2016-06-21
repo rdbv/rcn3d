@@ -1,0 +1,2 @@
+kamera header only TODO // klasa
+klasa frame time (od liczenia delty itp)

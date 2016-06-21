@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <initializer_list>
 
+#define __SHADER_CHECK_IS_UNIFORM_EXIST
+
 namespace rcn3d {
 
 class ShaderProgram {

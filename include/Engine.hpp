@@ -2,9 +2,11 @@
 #define ENGINE_HPP
 
 #include "../include/header_only/Math.hpp"
+#include "../include/header_only/DebugCamera.hpp"
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"
-#include "../include/InputHandler.hpp"
+#include "../include/VertexArray.hpp"
+#include "../include/VertexBuffer.hpp"
 
 namespace rcn3d {
 
