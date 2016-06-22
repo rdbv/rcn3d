@@ -3,6 +3,7 @@
 
 #include "../include/header_only/Math.hpp"
 #include "../include/header_only/DebugCamera.hpp"
+
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"
 #include "../include/VertexArray.hpp"
@@ -14,13 +15,17 @@ class Engine
 {
 public:
 
-    Engine() {
+    static Engine& getInstance() {
+        static Engine ng;
+        return ng;
     }
 
     SDL_Context context_SDL;
 
 private:
-    
+    Engine() {}
+    Engine(const Engine&)   = delete;
+    void operator=(Engine&) = delete;
 };
 
 } // namespace rcn3d

@@ -3,36 +3,38 @@
 
 #define GLEW_STATIC 
 #include <GL/glew.h>
+#include <vector>
 #include <cstdint>
 #include <cassert>
 
 namespace rcn3d {
 
-template<std::size_t N>
 class VertexBuffer
 {   
 public:
-    VertexBuffer() {
+    VertexBuffer(std::size_t n)
+        : size(n) {
+            buf.resize(size);
     }
 
     inline void createVertexBuffers() {
-        glGenBuffers(N, buf);
+        glGenBuffers(size, &buf[0]);
     }
 
-    void deleteBuffers() {
-        glDeleteBuffers(N, buf);
+    inline void deleteBuffers() {
+        glDeleteBuffers(size, &buf[0]);
     }
 
-    void bind(GLenum t, std::size_t n) {
-        assert(n < N);
+    inline void bind(GLenum t, std::size_t n) {
+        assert(n < size);
         glBindBuffer(t, buf[n]); 
     }
 
 
 private:
 
-    GLuint buf[N];
-    std::size_t size = N;
+    std::vector<GLuint> buf;
+    std::size_t size = 0;
 };
 
 } // namespace rcn3d

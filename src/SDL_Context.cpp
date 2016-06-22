@@ -42,6 +42,8 @@ bool SDL_Context::initWindowSDL(SDL_Settings cSettings) {
     // check errors
     if(!window)
         return false;
+    
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     return true;
 }
