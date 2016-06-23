@@ -98,11 +98,11 @@ int main(int argc, char ** argv) {
     init_engine();
 
     // Shaders
-    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
-                            "stuff/shaders/test0.fs");
+    rcn3d::ShaderProgram s0("../stuff/shaders/test0.vs",
+                            "../stuff/shaders/test0.fs");
 
-    rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
-                            "stuff/shaders/test1_color.fs");
+    rcn3d::ShaderProgram s1("../stuff/shaders/test1_color.vs",
+                            "../stuff/shaders/test1_color.fs");
 
     s0.addUniform("mvp");
     auto uni_map = s1.addUniforms({"mvp"});
@@ -128,15 +128,13 @@ int main(int argc, char ** argv) {
                                                     [](float c) { return 0.25f; }, 256, -8.0f);
     glm::mat4 model_quadratic = glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, 0.0f, 0.0f));
 
-    Uint32 now = 0, last = 0, delta = 0;
+    //Uint32 now = 0, last = 0, delta = 0;
+
+    rcn3d::FrameTime frameTime;
 
     while(true) {
-
-        now = SDL_GetTicks();
-        if(now > last) {
-            delta = now - last;
-            last = now;
-        }
+//        Uint32 startTicks = SDL_GetTicks();
+        frameTime.begin();
 
         SDL_Event ev;
         while(SDL_PollEvent(&ev)) {
@@ -153,10 +151,10 @@ int main(int argc, char ** argv) {
         }
 
         if(keys['q'])exit(0);
-        if(keys['w']) cam.processKeyboard(rcn3d::FORWARD, delta);
-        if(keys['s']) cam.processKeyboard(rcn3d::BACKWARD, delta);
-        if(keys['a']) cam.processKeyboard(rcn3d::LEFT, delta);
-        if(keys['d']) cam.processKeyboard(rcn3d::RIGHT, delta);
+        if(keys['w']) cam.processKeyboard(rcn3d::FORWARD, frameTime.getDeltaTime());
+        if(keys['s']) cam.processKeyboard(rcn3d::BACKWARD, frameTime.getDeltaTime());
+        if(keys['a']) cam.processKeyboard(rcn3d::LEFT, frameTime.getDeltaTime());
+        if(keys['d']) cam.processKeyboard(rcn3d::RIGHT, frameTime.getDeltaTime());
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.25f, 0.0f, 0.0f, 0.0f);
@@ -187,6 +185,12 @@ int main(int argc, char ** argv) {
         vao_quadratic.unbind();
 
         ng.context_SDL.swapBuffers();
+        frameTime.end();
+
+//        Uint32 frameTicks = SDL_GetTicks() - startTicks;
+//        if(1000.0f / 60.0f > frameTicks) {
+//            SDL_Delay(static_cast<Uint32>(1000.0f / 60.0f - frameTicks));
+//        }
     }
 
 }

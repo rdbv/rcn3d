@@ -10,11 +10,11 @@ enum CameraDirection {
 class DebugCamera 
 {
 public:
-    glm::vec3 position = glm::vec3(0.0f, 0.0f, 5.0f);
-    glm::vec3 front = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 right;
-    glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 5.0f);
+    glm::vec3 m_front = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 m_up = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 m_right;
+    glm::vec3 m_worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
     float yaw = -90.0f;
     float pitch = 0.0f;
@@ -26,7 +26,7 @@ public:
     }
 
     glm::mat4 getViewMatrix() {
-        return glm::lookAt(position, position + front, up);  
+        return glm::lookAt(m_position, m_position + m_front, m_up);
     }
 
     void processMouse(float xoff, float yoff) {
@@ -41,22 +41,22 @@ public:
         updateCameraVectors();
     }
     
-    void processKeyboard(CameraDirection dir, unsigned int delta) {
+    void processKeyboard(CameraDirection dir, float delta) {
         float vel = mvSpeed * (1.0f / delta);
-        if(dir == FORWARD)  position += front * vel;
-        if(dir == BACKWARD) position -= front * vel;
-        if(dir == LEFT)     position -= right * vel;
-        if(dir == RIGHT)    position += right * vel;
+        if(dir == FORWARD)  m_position += m_front * vel;
+        if(dir == BACKWARD) m_position -= m_front * vel;
+        if(dir == LEFT)     m_position -= m_right * vel;
+        if(dir == RIGHT)    m_position += m_right * vel;
     }
 
     void updateCameraVectors() {
-        glm::vec3 frnt;
-        frnt.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-        frnt.y = sin(glm::radians(pitch));
-        frnt.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-        front = glm::normalize(frnt);
-        right = glm::normalize(glm::cross(front, worldUp));
-        up = glm::normalize(glm::cross(right, front));
+        glm::vec3 front;
+        front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        front.y = sin(glm::radians(pitch));
+        front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        m_front = glm::normalize(front);
+        m_right = glm::normalize(glm::cross(m_front, m_worldUp));
+        m_up = glm::normalize(glm::cross(m_right, m_front));
     }
 };
 
