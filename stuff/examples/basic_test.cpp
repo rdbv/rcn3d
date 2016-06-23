@@ -133,7 +133,6 @@ int main(int argc, char ** argv) {
     rcn3d::FrameTime frameTime;
 
     while(true) {
-//        Uint32 startTicks = SDL_GetTicks();
         frameTime.begin();
 
         SDL_Event ev;
@@ -186,11 +185,6 @@ int main(int argc, char ** argv) {
 
         ng.context_SDL.swapBuffers();
         frameTime.end();
-
-//        Uint32 frameTicks = SDL_GetTicks() - startTicks;
-//        if(1000.0f / 60.0f > frameTicks) {
-//            SDL_Delay(static_cast<Uint32>(1000.0f / 60.0f - frameTicks));
-//        }
     }
 
 }
