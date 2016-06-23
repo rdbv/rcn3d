@@ -83,7 +83,7 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
 
     vao.createVertexArrays();
     vbo.createVertexBuffers();
-    
+
     vao.bind();
     vbo.bind(GL_ARRAY_BUFFER, 0);
 
@@ -128,7 +128,7 @@ rcn3d::VertexArray get_triangle() {
        {-0.5f, -0.5f, 0.0f},
        {0.0f,  0.5f, 0.0f}
     };
-    
+
     rcn3d::VertexArray  vao;
     rcn3d::VertexBuffer vbo(1);
 
@@ -147,7 +147,7 @@ rcn3d::VertexArray get_triangle() {
 }
 
 
-int main() {
+int main(int argc, char**argv) {
 
     bool keys[256*8] {0};
 
@@ -160,7 +160,7 @@ int main() {
     ng.context_SDL.initContext(set);
 
 
-    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs", 
+    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
                             "stuff/shaders/test0.fs");
 
     rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
@@ -189,7 +189,7 @@ int main() {
     Uint32 now;
     Uint32 last = 0;
     Uint32 delta = 0;
-    
+
     GLfloat lastX = set.windowSize.x / 2.0f;
     GLfloat lastY = set.windowSize.y / 2.0f;
     bool firstMouse = true;
@@ -247,7 +247,7 @@ int main() {
 
         mvp = proj * view * mod1;
         s0.setUniform("mvp", mvp);
-        
+
         vao.bind();
         glDrawArrays(GL_LINES, 0, 256);
         vao.unbind();
@@ -266,7 +266,7 @@ int main() {
         vao2.bind();
         glDrawArrays(GL_LINES, 0, 256);
         vao2.unbind();
-       
+
         mvp = proj * view * mod4;
         s1.setUniform("mvp", mvp);
 
@@ -277,6 +277,6 @@ int main() {
         ng.context_SDL.swapBuffers();
     }
 
-    
+
 }
 

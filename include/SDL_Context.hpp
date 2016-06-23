@@ -8,6 +8,7 @@
 #else
 #endif
 
+#define GLEW_STATIC
 #include <GL/glew.h>
 
 #include "header_only/Math.hpp"

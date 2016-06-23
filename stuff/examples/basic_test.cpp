@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <functional>
 
-/* 
+/*
  * Do stestowania czy działa
  */
 
@@ -31,7 +31,7 @@ rcn3d::VertexArray get_triangle() {
        {-0.5f, -0.5f, 0.0f},
        {0.0f,  0.5f, 0.0f}
     };
-    
+
     rcn3d::VertexArray  vao;
     rcn3d::VertexBuffer vbo(1);
 
@@ -74,7 +74,7 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
 
     vao.createVertexArrays();
     vbo.createVertexBuffers();
-    
+
     vao.bind();
     vbo.bind(GL_ARRAY_BUFFER, 0);
 
@@ -94,11 +94,11 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
 
 // Trójkąt, się powinien pokazać.
 // i wykresy.
-int main() {
+int main(int argc, char ** argv) {
     init_engine();
 
-    // Shaders 
-    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs", 
+    // Shaders
+    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
                             "stuff/shaders/test0.fs");
 
     rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
@@ -107,11 +107,11 @@ int main() {
     s0.addUniform("mvp");
     auto uni_map = s1.addUniforms({"mvp"});
 
-    std::for_each(uni_map.begin(), uni_map.end(), 
-            [](const std::pair<std::string, GLint> &p) 
+    std::for_each(uni_map.begin(), uni_map.end(),
+            [](const std::pair<std::string, GLint> &p)
                 { printf("%s:%d (ID)\n", p.first.c_str(), p.second); });
 
-    // można też dodawać 
+    // można też dodawać
     // auto uni_map = s0.addUniforms({"mvp", "pvp", "xD"});
 
     // 'Modele'
