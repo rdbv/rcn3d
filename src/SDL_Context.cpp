@@ -42,18 +42,18 @@ bool SDL_Context::initWindowSDL(SDL_Settings cSettings) {
     // check errors
     if(!window)
         return false;
-    
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+
+    //qSDL_SetRelativeMouseMode(SDL_TRUE);
 
     return true;
 }
 
 bool SDL_Context::initGLContextSDL(SDL_Settings cSettings) {
     glContext = SDL_GL_CreateContext(window);
-    
+
     if(!glContext)
         return false;
-     
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);

@@ -2,56 +2,58 @@
 
 using namespace rcn3d;
 
-int InputHandler::keyboardSize;
-const Uint8* InputHandler::keyboardSDL_state;
-std::vector<KeyState> InputHandler::keyboard;
+std::map<int, bool> InputHandler::keyboardEventsProxy;
+std::map<int, bool> InputHandler::mouseEventsProxy;
 
-InputHandler::InputHandler() {
-    initHandler();
-}
-
-void InputHandler::pollEvents() {
-    SDL_Event ev;
-
-    while(SDL_PollEvent(&ev)) {
-   
-        switch(ev.type) {
-            case SDL_KEYDOWN:
-                handleKeyDown(ev);
-                break;
-            case SDL_KEYUP:
-                handleKeyUp(ev);
-                break;
-        }
-
+bool InputHandler::pollEvent(Event* ev) {
+    SDL_Event e;
+    if(SDL_PollEvent(&e) == 0)
+        return false;
+    ev->initFromSDL_Event(&e);
+    if(e.type == SDL_KEYDOWN){
+        keyboardEventsProxy[ev->getChar()] = true;
+    }
+    else if(e.type == SDL_KEYUP){
+        keyboardEventsProxy[ev->getChar()] = false;
+    }
+    else if(e.type == SDL_MOUSEBUTTONDOWN){
+        mouseEventsProxy[ev->getMouseButton()] = true;
+    }
+    else if(e.type == SDL_MOUSEBUTTONUP){
+        mouseEventsProxy[ev->getMouseButton()] = false;
     }
 }
 
-KeyState InputHandler::getKeyState(int k) {
-    return keyboard[k];
+bool InputHandler::isKeyDown(int c) {
+    return keyboardEventsProxy.find(c) != keyboardEventsProxy.end() &&
+    keyboardEventsProxy[c] == true;
 }
 
-void InputHandler::initHandler() {
-    keyboardSDL_state = SDL_GetKeyboardState(&keyboardSize);  
-    keyboard.resize(keyboardSize);
-    std::for_each(keyboard.begin(), keyboard.end(), [](KeyState& k) { k = KeyReleased; });    
+bool InputHandler::isMouseButtonDown(int b) {
+    return mouseEventsProxy.find(b) != mouseEventsProxy.end() &&
+    mouseEventsProxy[b] == true;
 }
 
-void InputHandler::handleKeyDown(SDL_Event& ev) {
-    char c = ev.key.keysym.sym;
-    bool rep = ev.key.repeat;
-  
-    if(rep) {
-        keyboard[c] = KeyRepeated;
-        return;
-    }
-    
-    if(keyboard[c] == KeyReleased) {
-        keyboard[c] = KeyPressed;
-    }
+double InputHandler::getMouseX() {
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    return x;
 }
 
-void InputHandler::handleKeyUp(SDL_Event& ev) {
-    char c = ev.key.keysym.sym;
-    keyboard[c] = KeyReleased;
+double InputHandler::getMouseY() {
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    return y;
+}
+
+double InputHandler::getMouseDesktopX() {
+    int x, y;
+    SDL_GetGlobalMouseState(&x, &y);
+    return x;
+}
+
+double InputHandler::getMouseDesktopY() {
+    int x, y;
+    SDL_GetGlobalMouseState(&x, &y);
+    return y;
 }

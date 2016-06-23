@@ -2,29 +2,15 @@
 #define INPUT_HANDLER_HPP
 
 #include "../include/SDL_Context.hpp"
+#include "../include/Event.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 namespace rcn3d {
 
-enum KeyState { 
-    KeyPressed, KeyReleased, KeyRepeated 
-};
-
-auto getStateString = [](KeyState s) {
-    switch(s) {
-        case KeyPressed:
-            return "KeyPressed";
-        case KeyReleased:
-            return "KeyReleased";
-        case KeyRepeated:
-            return "KeyRepeated";
-    }
-    return "???";
-};
-
-class InputHandler 
+class InputHandler
 {
 public:
 
@@ -33,21 +19,20 @@ public:
         return handler;
     }
 
-    static void pollEvents();
-
-    static KeyState getKeyState(int);
+    static bool pollEvent(Event*);
+    static bool isKeyDown(int c);
+    static bool isMouseButtonDown(int b);
+    static double getMouseX();
+    static double getMouseY();
+    static double getMouseDesktopX();
+    static double getMouseDesktopY();
 
 private:
-    InputHandler();
+    InputHandler(){};
 
-    static void initHandler();
-    
-    static void handleKeyDown(SDL_Event&);
-    static void handleKeyUp(SDL_Event&);
+    static std::map<int, bool> keyboardEventsProxy;
+    static std::map<int, bool> mouseEventsProxy;
 
-    static int keyboardSize;
-    static const Uint8* keyboardSDL_state;
-    static std::vector<KeyState> keyboard;    
 };
 
 } // namespace rcn3d
