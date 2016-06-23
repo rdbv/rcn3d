@@ -1,20 +1,17 @@
 #include "../include/VertexArray.hpp"
 using namespace rcn3d;
 
-GLuint VertexArray::getID() {
-    return obj;
+void VertexArray::createVertexArrays() {
+    glGenVertexArrays(size, &vx[0]); 
 }
 
-void VertexArray::createVertexArray() {
-    glGenVertexArrays(1, &obj); 
+void VertexArray::deleteVertexArrays() {
+    glDeleteVertexArrays(size, &vx[0]);
 }
 
-void VertexArray::deleteVertexArray() {
-    glDeleteVertexArrays(1, &obj);
-}
-
-void VertexArray::bind() {
-    glBindVertexArray(obj);
+void VertexArray::bind(std::size_t n) {
+    assert(n < size);
+    glBindVertexArray(vx[n]);
 }
 
 void VertexArray::unbind() {

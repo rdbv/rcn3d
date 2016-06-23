@@ -18,7 +18,7 @@ rcn3d::VertexArray get_wave() {
     rcn3d::VertexBuffer vbo(1);
 
     vbo.createVertexBuffers();
-    vao.createVertexArray();
+    vao.createVertexArrays();
 
     vao.bind();
     vbo.bind(GL_ARRAY_BUFFER, 0);
@@ -50,7 +50,7 @@ rcn3d::VertexArray get_func(const std::function<float(float)>& fy, std::size_t v
     rcn3d::VertexBuffer vbo(1);
 
     vbo.createVertexBuffers();
-    vao.createVertexArray();
+    vao.createVertexArrays();
 
     vao.bind();
     vbo.bind(GL_ARRAY_BUFFER, 0);
@@ -78,10 +78,10 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
         x += x_step, c += c_step;
     }
 
-    rcn3d::VertexArray vao;
-    rcn3d::VertexBuffer vbo(2);
+    rcn3d::VertexArray vao(2);
+    rcn3d::VertexBuffer vbo(4);
 
-    vao.createVertexArray();
+    vao.createVertexArrays();
     vbo.createVertexBuffers();
     
     vao.bind();
@@ -97,6 +97,26 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
     glEnableVertexAttribArray(1);
 
     vao.unbind();
+
+    // ==
+
+    for(std::size_t i=0;i<vx_count/2;++i) {
+        cl_data[i].g = 0.5f;
+    }
+
+    vao.bind(1);
+    vbo.bind(GL_ARRAY_BUFFER, 2);
+
+    glBufferData(GL_ARRAY_BUFFER, vx_data.size() * sizeof(glm::vec3), &vx_data[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (GLvoid*)0);
+    glEnableVertexAttribArray(0);
+
+    vbo.bind(GL_ARRAY_BUFFER, 3);
+    glBufferData(GL_ARRAY_BUFFER, cl_data.size() * sizeof(glm::vec3), &cl_data[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (GLvoid*)0);
+    glEnableVertexAttribArray(1);
+    vao.unbind();
+
     return vao;
 }
 
@@ -113,7 +133,7 @@ rcn3d::VertexArray get_triangle() {
     rcn3d::VertexBuffer vbo(1);
 
     vbo.createVertexBuffers();
-    vao.createVertexArray();
+    vao.createVertexArrays();
 
     vao.bind();
     vbo.bind(GL_ARRAY_BUFFER, 0);
@@ -129,7 +149,7 @@ rcn3d::VertexArray get_triangle() {
 
 int main() {
 
-    bool keys[256] {0};
+    bool keys[256*8] {0};
 
     rcn3d::Engine& ng = rcn3d::Engine::getInstance();
     rcn3d::SDL_Settings set;
@@ -155,15 +175,16 @@ int main() {
     glm::mat4 mod0 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     glm::mat4 mod1 = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     glm::mat4 mod2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 mod3 = glm::translate(glm::mat4(1.0f), glm::vec3(4.0f, 0.0f, 0.0f));
+    glm::mat4 mod3 = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
+    glm::mat4 mod4 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
 
     s0.addUniform("mvp");
     s1.addUniform("mvp");
 
     rcn3d::VertexArray vao = get_wave();
     rcn3d::VertexArray vao0 = get_triangle();
-    rcn3d::VertexArray vao1 = get_func([](float x){ return sin(x) * cos(x*2); }, 256, 0.1);
-    rcn3d::VertexArray vao2 = get_func_col([](float x){ return 6.66*x; }, [](float c){ return sin(c); });
+    rcn3d::VertexArray vao1 = get_func([](float x){ return sin(x) * cos(x*2) * sin(x/2); }, 256, 0.1);
+    rcn3d::VertexArray vao2 = get_func_col([](float x){ return 2.05*x; }, [](float c){ return sin(c); });
 
     Uint32 now;
     Uint32 last = 0;
@@ -243,6 +264,13 @@ int main() {
         s1.setUniform("mvp", mvp);
 
         vao2.bind();
+        glDrawArrays(GL_LINES, 0, 256);
+        vao2.unbind();
+       
+        mvp = proj * view * mod4;
+        s1.setUniform("mvp", mvp);
+
+        vao2.bind(1);
         glDrawArrays(GL_LINES, 0, 256);
         vao2.unbind();
 

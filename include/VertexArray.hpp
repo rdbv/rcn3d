@@ -3,25 +3,36 @@
 
 #define GLEW_STATIC 
 #include <GL/glew.h>
+#include <vector>
+#include <cassert>
 
 namespace rcn3d {
 
 class VertexArray 
 {
 public:
+   
     VertexArray() {
+        vx.resize(size);
     }
 
-    void bind();
-    void unbind();
-    GLuint getID();
+    VertexArray(std::size_t n) 
+        : size(n) {
+        assert(n > 0);    
+        vx.resize(n);
+    }
 
-    void createVertexArray();
-    void deleteVertexArray();
+    void bind(std::size_t n = 0);
+    void unbind();
+
+
+    void createVertexArrays();
+    void deleteVertexArrays();
 
 private:
 
-    GLuint obj = 0;
+    std::vector<GLuint> vx;
+    std::size_t size = 1;
 };
 
 } // namespace rcn3d
