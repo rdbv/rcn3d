@@ -9,6 +9,7 @@
 #include "../include/ShaderProgram.hpp"
 #include "../include/VertexArray.hpp"
 #include "../include/VertexBuffer.hpp"
+#include "../include/FrameTime.hpp"
 
 namespace rcn3d {
 
