@@ -4,8 +4,11 @@
 #define GLEW_STATIC 
 #include <GL/glew.h>
 #include <vector>
+#include <cstdio>
 #include <cstdint>
 #include <cassert>
+
+#define VBO_DEBUG_PRINTF
 
 namespace rcn3d {
 
@@ -18,10 +21,16 @@ public:
     }
 
     inline void createVertexBuffers() {
+#ifdef VBO_DEBUG_PRINTF
+        printf("[%s] size:%lu\n", __FUNCTION__, size);
+#endif
         glGenBuffers(size, &buf[0]);
     }
 
-    inline void deleteBuffers() {
+    inline void deleteVertexBuffers() {
+#ifdef VBO_DEBUG_PRINTF
+        printf("[%s] size:%lu\n", __FUNCTION__, size);
+#endif
         glDeleteBuffers(size, &buf[0]);
     }
 

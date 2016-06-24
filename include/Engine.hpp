@@ -3,6 +3,7 @@
 
 #include "../include/header_only/Math.hpp"
 #include "../include/header_only/DebugCamera.hpp"
+#include "../include/header_only/GPUData.hpp"
 
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"

@@ -2,9 +2,14 @@
 #define VERTEX_ARRAY_HPP
 
 #define GLEW_STATIC 
+#define VAO_DEBUG_PRINTF
+
 #include <GL/glew.h>
+#include <map>
+#include <cstdio>
 #include <vector>
 #include <cassert>
+#include <memory>
 
 namespace rcn3d {
 
