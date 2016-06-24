@@ -4,12 +4,12 @@
 #include "../include/header_only/Math.hpp"
 #include "../include/header_only/DebugCamera.hpp"
 #include "../include/header_only/GPUData.hpp"
+#include "../include/header_only/FrameTime.hpp"
 
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"
 #include "../include/VertexArray.hpp"
 #include "../include/VertexBuffer.hpp"
-#include "../include/FrameTime.hpp"
 
 namespace rcn3d {
 
