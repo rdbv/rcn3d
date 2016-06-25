@@ -93,6 +93,36 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
     return vao;
 }
 
+#include "../cube_vx.hpp"
+
+rcn3d::VertexArray get_cube() {
+    rcn3d::VertexArray vao;
+    rcn3d::VertexBuffer vbo;
+
+    vao.createVertexArrays(1);
+    vbo.createVertexBuffers(2);
+
+    vao.bind(0);
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    
+    vbo.bind(GL_ARRAY_BUFFER, 0);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)0);
+   
+    vbo.bind(GL_ARRAY_BUFFER, 1);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+    
+    vao.unbind();
+
+    vao.addVertexBuffer(0, 0, vbo);
+    return vao;
+}
+
 // Trójkąt, się powinien pokazać.
 // i wykresy.
 int main(int argc, char ** argv) {
@@ -107,11 +137,7 @@ int main(int argc, char ** argv) {
                             "../stuff/shaders/test1_color.fs");
 
     s0.addUniform("mvp");
-    auto uni_map = s1.addUniforms({"mvp"});
-
-    std::for_each(uni_map.begin(), uni_map.end(),
-            [](const std::pair<std::string, GLint> &p)
-                { printf("%s:%d (ID)\n", p.first.c_str(), p.second); });
+    s1.addUniform("mvp");
 
     // można też dodawać
     // auto uni_map = s0.addUniforms({"mvp", "pvp", "xD"});
@@ -130,7 +156,9 @@ int main(int argc, char ** argv) {
                                                     [](float c) { return 0.25f; }, 256, -8.0f);
     glm::mat4 model_quadratic = glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, 0.0f, 0.0f));
 
-    //Uint32 now = 0, last = 0, delta = 0;
+    // Kostka
+    rcn3d::VertexArray vao_cube = get_cube();
+    glm::mat4 model_cube = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
 
     rcn3d::FrameTime frameTime;
 
@@ -161,14 +189,23 @@ int main(int argc, char ** argv) {
         glClearColor(0.25f, 0.0f, 0.0f, 0.0f);
 
         view = cam.getViewMatrix();
-        mvp = proj * view * model_triangle;
+        mvp = proj * view * model_cube;
 
         s0.run();
+        s0.setUniform("mvp", mvp);
+
+        vao_cube.bind(0);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        vao_cube.unbind();
+
+        mvp = proj * view * model_triangle;
         s0.setUniform("mvp", mvp);
 
         vao_triangle.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 3);
         vao_triangle.unbind();
+
+
 
         mvp = proj * view * model_linear;
         s1.run();
@@ -184,6 +221,7 @@ int main(int argc, char ** argv) {
         vao_quadratic.bind(0);
             glDrawArrays(GL_LINES, 0, 256);
         vao_quadratic.unbind();
+
 
         ng.context_SDL.swapBuffers();
         frameTime.end();
