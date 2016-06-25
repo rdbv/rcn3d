@@ -75,6 +75,7 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
     vao.createVertexArrays(1);
     vbo.createVertexBuffers(2);
 
+    
     vao.bind(0);
     vbo.bind(GL_ARRAY_BUFFER, 0);
 
