@@ -130,11 +130,11 @@ int main(int argc, char ** argv) {
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
     // Shaders
-    rcn3d::ShaderProgram s0("../stuff/shaders/test0.vs",
-                            "../stuff/shaders/test0.fs");
+    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
+                            "stuff/shaders/test0.fs");
 
-    rcn3d::ShaderProgram s1("../stuff/shaders/test1_color.vs",
-                            "../stuff/shaders/test1_color.fs");
+    rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
+                            "stuff/shaders/test1_color.fs");
 
     s0.addUniform("mvp");
     s1.addUniform("mvp");

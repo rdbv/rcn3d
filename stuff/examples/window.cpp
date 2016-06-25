@@ -8,9 +8,9 @@ GLfloat vx[] = {
 
 int main( int argc, char *argv[] ) {
 
-    rcn3d::Engine e;
+    static rcn3d::Engine& e = rcn3d::Engine::getInstance();
     rcn3d::SDL_Settings set;
-    set.windowPos = glm::vec2(1900, 0);
+    set.windowPos = glm::vec2(0, 0);
     e.context_SDL.initContext(set);
 
     rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
