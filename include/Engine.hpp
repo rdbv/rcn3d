@@ -6,9 +6,11 @@
 #include "../include/header_only/VertexBuffer.hpp"
 #include "../include/header_only/DebugCamera.hpp"
 #include "../include/header_only/FrameTime.hpp"
+#include "../include/header_only/Texture.hpp"
 
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"
+#include "../include/TextureLoader.hpp"
 
 namespace rcn3d {
 
@@ -22,6 +24,7 @@ public:
     }
 
     SDL_Context context_SDL;
+    TextureLoader tex_loader;
 
 private:
     Engine() {}

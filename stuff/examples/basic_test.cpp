@@ -8,6 +8,8 @@
  */
 
 static rcn3d::Engine& ng = rcn3d::Engine::getInstance();
+static rcn3d::TextureLoader& txl = ng.tex_loader;
+
 static rcn3d::DebugCamera cam;
 
 static glm::mat4 proj, view, mvp;
@@ -130,14 +132,19 @@ int main(int argc, char ** argv) {
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
     // Shaders
-    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
-                            "stuff/shaders/test0.fs");
+    // binarka jest w katalogu bin!!!
+    rcn3d::ShaderProgram s0("../stuff/shaders/test0.vs",
+                            "../stuff/shaders/test0.fs");
 
-    rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
-                            "stuff/shaders/test1_color.fs");
+    rcn3d::ShaderProgram s1("../stuff/shaders/test1_color.vs",
+                            "../stuff/shaders/test1_color.fs");
+
+    rcn3d::ShaderProgram s2("../stuff/shaders/test1_texture.vs",
+                            "../stuff/shaders/test1_texture.fs");
 
     s0.addUniform("mvp");
     s1.addUniform("mvp");
+    s2.addUniform({"mvp", "tex0"});
 
     // można też dodawać
     // auto uni_map = s0.addUniforms({"mvp", "pvp", "xD"});
@@ -153,12 +160,14 @@ int main(int argc, char ** argv) {
 
     // Funkcja kwadratowa
     rcn3d::VertexArray vao_quadratic = get_func_col([](float y) { return y*y; },
-                                                    [](float c) { return 0.25f; }, 256, -8.0f);
+                                                    [](float c) { return 0.90f; }, 256, -8.0f);
     glm::mat4 model_quadratic = glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, 0.0f, 0.0f));
 
     // Kostka
     rcn3d::VertexArray vao_cube = get_cube();
     glm::mat4 model_cube = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
+    // tekstura kostki (do sciagniecia z neta)
+    rcn3d::Texture tex0 = txl.loadNormalTexture("../../awesome_face.jpg");
 
     rcn3d::FrameTime frameTime;
 
@@ -189,14 +198,10 @@ int main(int argc, char ** argv) {
         glClearColor(0.25f, 0.0f, 0.0f, 0.0f);
 
         view = cam.getViewMatrix();
-        mvp = proj * view * model_cube;
 
+
+        // Draw triangle
         s0.run();
-        s0.setUniform("mvp", mvp);
-
-        vao_cube.bind(0);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-        vao_cube.unbind();
 
         mvp = proj * view * model_triangle;
         s0.setUniform("mvp", mvp);
@@ -204,11 +209,12 @@ int main(int argc, char ** argv) {
         vao_triangle.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 3);
         vao_triangle.unbind();
+        // end triangle
 
-
+        // draw functions
+        s1.run();
 
         mvp = proj * view * model_linear;
-        s1.run();
         s1.setUniform("mvp", mvp);
 
         vao_linear.bind(0);
@@ -221,7 +227,19 @@ int main(int argc, char ** argv) {
         vao_quadratic.bind(0);
             glDrawArrays(GL_LINES, 0, 256);
         vao_quadratic.unbind();
+        // end functions
 
+        // draw cube
+        tex0.bindAndActivate(GL_TEXTURE0);
+        mvp = proj * view * model_cube;
+
+        s2.run();
+        s2.setUniform("mvp", mvp);
+        s2.setUniform("tex0", 0);
+        
+        vao_cube.bind(0);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        vao_cube.unbind();
 
         ng.context_SDL.swapBuffers();
         frameTime.end();
