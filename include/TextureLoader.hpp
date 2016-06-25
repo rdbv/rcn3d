@@ -9,6 +9,7 @@
 #endif
 #include <string>
 #include <FreeImage.h>
+#include <cstdio>
 
 #include "header_only/Texture.hpp"
 
@@ -18,7 +19,7 @@ class TextureLoader
 {
 public:
     Texture loadNormalTexture(const std::string&);
-       
+
 };
 
 } // namespace rcn3d
