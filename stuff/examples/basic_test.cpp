@@ -133,7 +133,12 @@ int main(int argc, char ** argv) {
     init_engine();
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    rcn3d::Transform cubeTransform;
+    rcn3d::Transform cubeTransform, cubeChildTransform;
+    cubeChildTransform.moveX(1.0);
+    cubeChildTransform.setScale(0.25, 0.25, 0.25);
+    cubeChildTransform.setParent(&cubeTransform);
+    cubeTransform.moveY(-2.0);
+
     // Shaders
     // binarka jest w katalogu bin!!!
     rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
@@ -199,6 +204,15 @@ int main(int argc, char ** argv) {
         if(inputHandler.isKeyDown('n')) cubeTransform.scaleUpY(-frameTime.getDeltaTime());
         if(inputHandler.isKeyDown('m')) cubeTransform.scaleUpY(frameTime.getDeltaTime());
 
+        //klawiatura numeryczna
+        if(inputHandler.isKeyDown(1073741912+4)) cubeChildTransform.moveX(-frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown(1073741912+6)) cubeChildTransform.moveX(frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown(1073741912+8)) cubeChildTransform.moveZ(-frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown(1073741912+2)) cubeChildTransform.moveZ(frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown(1073741912+7)) cubeChildTransform.rotateY(frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown(1073741912+9)) cubeChildTransform.rotateY(-frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown(1073741912+5)) cubeChildTransform.scaleUpY(frameTime.getDeltaTime());
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.25f, 0.0f, 0.0f, 0.0f);
 
@@ -235,12 +249,19 @@ int main(int argc, char ** argv) {
 
         // draw cube
         //tex0.bindAndActivate(GL_TEXTURE0);
-        mvp = proj * view * cubeTransform.getLocalTransformMatrix();
+        mvp = proj * view * cubeTransform.getGlobalTransformMatrix();
 
         s1.run();
         s1.setUniform("mvp", mvp);
         //s2.setUniform("tex0", 0);
 
+        vao_cube.bind(0);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        vao_cube.unbind();
+
+        mvp = proj * view * cubeChildTransform.getGlobalTransformMatrix();
+        s1.run();
+        s1.setUniform("mvp", mvp);
         vao_cube.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         vao_cube.unbind();

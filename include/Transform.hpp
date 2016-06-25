@@ -6,6 +6,8 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+#include <vector>
+
 namespace rcn3d {
 
 class Transform
@@ -13,7 +15,13 @@ class Transform
     public:
         Transform();
 
+        /*get transform in local space*/
         glm::mat4 getLocalTransformMatrix();
+        /*get transform in global space (scene)*/
+        glm::mat4 getGlobalTransformMatrix();
+
+        void setParent(Transform* t);
+
         void translate(GLfloat dx, GLfloat dy, GLfloat dz=0.f);
         void setPosition(GLfloat x, GLfloat y, GLfloat z=0.f);
         void setScale(GLfloat dx, GLfloat dy, GLfloat dz=1.0f);
@@ -48,13 +56,15 @@ class Transform
         void setRotX(GLfloat x){rotX=x;needUpdate=true;}
         void setRotY(GLfloat y){rotY=y;needUpdate=true;}
         void setRotZ(GLfloat z){rotZ=z;needUpdate=true;}
+
     private:
         glm::mat4 mxTransform;
         bool needUpdate=false;
         GLfloat posX, posY, posZ;
         GLfloat scaleX, scaleY, scaleZ;
         GLfloat rotX, rotY, rotZ;
-
+        Transform* parent;
+        std::vector<Transform* > vecChildren;
 };
 
 }

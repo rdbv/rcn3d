@@ -8,6 +8,7 @@ scaleX(1.f),scaleY(1.f),scaleZ(1.f),
 rotX(0.0f),rotY(0.0f),rotZ(0.0f)
 {
     mxTransform = glm::mat4();
+    parent = nullptr;
 }
 
 glm::mat4 Transform::getLocalTransformMatrix() {
@@ -24,23 +25,40 @@ glm::mat4 Transform::getLocalTransformMatrix() {
     return mxTransform;
 }
 
-void rcn3d::Transform::translate(GLfloat dx, GLfloat dy, GLfloat dz) {
+glm::mat4 Transform::getGlobalTransformMatrix() {
+    glm::mat4 mx = getLocalTransformMatrix();
+    if(parent == nullptr) {
+        return getLocalTransformMatrix();
+    }
+    else {
+        return parent->getGlobalTransformMatrix() * getLocalTransformMatrix();
+    }
+    return mx;
+}
+
+void Transform::translate(GLfloat dx, GLfloat dy, GLfloat dz) {
     posX += dx;
     posY += dy;
     posZ += dz;
     needUpdate=true;
 }
 
-void rcn3d::Transform::setPosition(GLfloat x, GLfloat y, GLfloat z) {
+void Transform::setPosition(GLfloat x, GLfloat y, GLfloat z) {
     posX = x;
     posY = y;
     posZ = z;
     needUpdate=true;
 }
 
-void rcn3d::Transform::setScale(GLfloat dx, GLfloat dy, GLfloat dz) {
+void Transform::setScale(GLfloat dx, GLfloat dy, GLfloat dz) {
     scaleX = dx;
     scaleY = dy;
     scaleZ = dz;
     needUpdate=true;
 }
+
+void Transform::setParent(Transform* t) {
+    parent = t;
+    t->vecChildren.push_back(this);
+}
+
