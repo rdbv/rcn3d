@@ -33,6 +33,10 @@ public:
         calculateFps();
     }
 
+    Uint32 getRawDelta() {
+        return delta;
+    }
+
     float getDeltaTime() {
         return delta / 1000.0f;
     }

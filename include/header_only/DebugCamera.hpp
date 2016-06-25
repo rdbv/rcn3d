@@ -42,7 +42,7 @@ public:
     }
     
     void processKeyboard(CameraDirection dir, float delta) {
-        float vel = mvSpeed * (1.0f / delta);
+        float vel = mvSpeed * delta;
         if(dir == FORWARD)  m_position += m_front * vel;
         if(dir == BACKWARD) m_position -= m_front * vel;
         if(dir == LEFT)     m_position -= m_right * vel;

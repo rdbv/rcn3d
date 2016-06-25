@@ -2,14 +2,13 @@
 #define ENGINE_HPP
 
 #include "../include/header_only/Math.hpp"
+#include "../include/header_only/VertexArray.hpp"
+#include "../include/header_only/VertexBuffer.hpp"
 #include "../include/header_only/DebugCamera.hpp"
-#include "../include/header_only/GPUData.hpp"
 #include "../include/header_only/FrameTime.hpp"
 
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"
-#include "../include/VertexArray.hpp"
-#include "../include/VertexBuffer.hpp"
 
 namespace rcn3d {
 
@@ -29,6 +28,7 @@ private:
     Engine(const Engine&)   = delete;
     void operator=(Engine&) = delete;
 };
+
 
 } // namespace rcn3d
 

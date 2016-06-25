@@ -1,2 +1,0 @@
-#include "../include/VertexBuffer.hpp"
-

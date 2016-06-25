@@ -33,12 +33,12 @@ rcn3d::VertexArray get_triangle() {
     };
 
     rcn3d::VertexArray  vao;
-    rcn3d::VertexBuffer vbo(1);
+    rcn3d::VertexBuffer vbo;
 
-    vbo.createVertexBuffers();
-    vao.createVertexArrays();
+    vbo.createVertexBuffers(1);
+    vao.createVertexArrays(1);
 
-    vao.bind();
+    vao.bind(0);
     vbo.bind(GL_ARRAY_BUFFER, 0);
 
     glBufferData(GL_ARRAY_BUFFER, vx_data.size() * sizeof(glm::vec3), &vx_data[0], GL_STATIC_DRAW);
@@ -70,12 +70,12 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
     }
 
     rcn3d::VertexArray vao;
-    rcn3d::VertexBuffer vbo(4);
+    rcn3d::VertexBuffer vbo;
 
-    vao.createVertexArrays();
-    vbo.createVertexBuffers();
+    vao.createVertexArrays(1);
+    vbo.createVertexBuffers(2);
 
-    vao.bind();
+    vao.bind(0);
     vbo.bind(GL_ARRAY_BUFFER, 0);
 
     glBufferData(GL_ARRAY_BUFFER, vx_data.size() * sizeof(glm::vec3), &vx_data[0], GL_STATIC_DRAW);
@@ -96,6 +96,7 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
 // i wykresy.
 int main(int argc, char ** argv) {
     init_engine();
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     // Shaders
     rcn3d::ShaderProgram s0("../stuff/shaders/test0.vs",
@@ -164,7 +165,7 @@ int main(int argc, char ** argv) {
         s0.run();
         s0.setUniform("mvp", mvp);
 
-        vao_triangle.bind();
+        vao_triangle.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 3);
         vao_triangle.unbind();
 
@@ -172,14 +173,14 @@ int main(int argc, char ** argv) {
         s1.run();
         s1.setUniform("mvp", mvp);
 
-        vao_linear.bind();
+        vao_linear.bind(0);
             glDrawArrays(GL_LINES, 0, 256);
         vao_linear.unbind();
 
         mvp = proj * view * model_quadratic;
         s1.setUniform("mvp", mvp);
 
-        vao_quadratic.bind();
+        vao_quadratic.bind(0);
             glDrawArrays(GL_LINES, 0, 256);
         vao_quadratic.unbind();
 
