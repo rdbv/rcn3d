@@ -1,4 +1,6 @@
 #include "../../include/Engine.hpp"
+#include "../../include/InputHandler.hpp"
+#include "../../include/Transform.hpp"
 #include <map>
 #include <algorithm>
 #include <functional>
@@ -8,12 +10,12 @@
  */
 
 static rcn3d::Engine& ng = rcn3d::Engine::getInstance();
+static rcn3d::InputHandler& inputHandler = rcn3d::InputHandler::getInstance();
 static rcn3d::TextureLoader& txl = ng.tex_loader;
 
 static rcn3d::DebugCamera cam;
 
 static glm::mat4 proj, view, mvp;
-static std::map<Uint32, bool> keys;
 
 void init_engine() {
     rcn3d::SDL_Settings set;
@@ -77,7 +79,7 @@ rcn3d::VertexArray get_func_col(const std::function<float(float)>& fy,
     vao.createVertexArrays(1);
     vbo.createVertexBuffers(2);
 
-    
+
     vao.bind(0);
     vbo.bind(GL_ARRAY_BUFFER, 0);
 
@@ -108,17 +110,17 @@ rcn3d::VertexArray get_cube() {
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-    
+
     vbo.bind(GL_ARRAY_BUFFER, 0);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)0);
-   
+
     vbo.bind(GL_ARRAY_BUFFER, 1);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
-    
+
     vao.unbind();
 
     vao.addVertexBuffer(0, 0, vbo);
@@ -131,16 +133,17 @@ int main(int argc, char ** argv) {
     init_engine();
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
+    rcn3d::Transform cubeTransform;
     // Shaders
     // binarka jest w katalogu bin!!!
-    rcn3d::ShaderProgram s0("../stuff/shaders/test0.vs",
-                            "../stuff/shaders/test0.fs");
+    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
+                            "stuff/shaders/test0.fs");
 
-    rcn3d::ShaderProgram s1("../stuff/shaders/test1_color.vs",
-                            "../stuff/shaders/test1_color.fs");
+    rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
+                            "stuff/shaders/test1_color.fs");
 
-    rcn3d::ShaderProgram s2("../stuff/shaders/test1_texture.vs",
-                            "../stuff/shaders/test1_texture.fs");
+    rcn3d::ShaderProgram s2("stuff/shaders/test1_texture.vs",
+                            "stuff/shaders/test1_texture.fs");
 
     s0.addUniform("mvp");
     s1.addUniform("mvp");
@@ -165,40 +168,41 @@ int main(int argc, char ** argv) {
 
     // Kostka
     rcn3d::VertexArray vao_cube = get_cube();
-    glm::mat4 model_cube = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
+    glm::mat4 model_cube = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     // tekstura kostki (do sciagniecia z neta)
-    rcn3d::Texture tex0 = txl.loadNormalTexture("../../awesome_face.jpg");
+    rcn3d::Texture tex0 = txl.loadNormalTexture("stuff/textures/awesomeface.png");
 
     rcn3d::FrameTime frameTime;
 
     while(true) {
         frameTime.begin();
 
-        SDL_Event ev;
-        while(SDL_PollEvent(&ev)) {
-            if(ev.type == SDL_KEYDOWN) {
-                keys[ev.key.keysym.sym] = true;
-            }
-            else if(ev.type == SDL_KEYUP) {
-                keys[ev.key.keysym.sym] = false;
-            }
-            else if(ev.type == SDL_MOUSEMOTION) {
+        rcn3d::Event ev;
+        while(inputHandler.pollEvent(&ev)) {
+            if(ev.type == SDL_MOUSEMOTION) {
                 float x = ev.motion.xrel, y = ev.motion.yrel;
                 cam.processMouse(x, -y);
             }
         }
 
-        if(keys['q'])exit(0);
-        if(keys['w']) cam.processKeyboard(rcn3d::FORWARD, frameTime.getDeltaTime());
-        if(keys['s']) cam.processKeyboard(rcn3d::BACKWARD, frameTime.getDeltaTime());
-        if(keys['a']) cam.processKeyboard(rcn3d::LEFT, frameTime.getDeltaTime());
-        if(keys['d']) cam.processKeyboard(rcn3d::RIGHT, frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('q'))exit(0);
+        if(inputHandler.isKeyDown('w')) cam.processKeyboard(rcn3d::FORWARD, frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('s')) cam.processKeyboard(rcn3d::BACKWARD, frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('a')) cam.processKeyboard(rcn3d::LEFT, frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('d')) cam.processKeyboard(rcn3d::RIGHT, frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('h')) cubeTransform.moveX(-frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown('u')) cubeTransform.moveZ(-frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown('j')) cubeTransform.moveZ(frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown('k')) cubeTransform.moveX(frameTime.getDeltaTime()*2.0);
+        if(inputHandler.isKeyDown('y')) cubeTransform.rotateY(frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('i')) cubeTransform.rotateY(-frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('n')) cubeTransform.scaleUpY(-frameTime.getDeltaTime());
+        if(inputHandler.isKeyDown('m')) cubeTransform.scaleUpY(frameTime.getDeltaTime());
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.25f, 0.0f, 0.0f, 0.0f);
 
         view = cam.getViewMatrix();
-
 
         // Draw triangle
         s0.run();
@@ -230,13 +234,13 @@ int main(int argc, char ** argv) {
         // end functions
 
         // draw cube
-        tex0.bindAndActivate(GL_TEXTURE0);
-        mvp = proj * view * model_cube;
+        //tex0.bindAndActivate(GL_TEXTURE0);
+        mvp = proj * view * cubeTransform.getLocalTransformMatrix();
 
-        s2.run();
-        s2.setUniform("mvp", mvp);
-        s2.setUniform("tex0", 0);
-        
+        s1.run();
+        s1.setUniform("mvp", mvp);
+        //s2.setUniform("tex0", 0);
+
         vao_cube.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         vao_cube.unbind();
