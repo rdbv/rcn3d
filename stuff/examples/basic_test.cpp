@@ -140,7 +140,6 @@ int main(int argc, char ** argv) {
     cubeTransform.moveY(-2.0);
 
     // Shaders
-    // binarka jest w katalogu bin!!!
     rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
                             "stuff/shaders/test0.fs");
 
@@ -152,7 +151,7 @@ int main(int argc, char ** argv) {
 
     s0.addUniform("mvp");
     s1.addUniform("mvp");
-    s2.addUniform({"mvp", "tex0"});
+    s2.addUniforms({"mvp", "tex0"});
 
     // można też dodawać
     // auto uni_map = s0.addUniforms({"mvp", "pvp", "xD"});
@@ -173,7 +172,6 @@ int main(int argc, char ** argv) {
 
     // Kostka
     rcn3d::VertexArray vao_cube = get_cube();
-    glm::mat4 model_cube = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     // tekstura kostki (do sciagniecia z neta)
     rcn3d::Texture tex0 = txl.loadNormalTexture("stuff/textures/awesomeface.png");
 
@@ -248,20 +246,19 @@ int main(int argc, char ** argv) {
         // end functions
 
         // draw cube
-        //tex0.bindAndActivate(GL_TEXTURE0);
+        tex0.bindAndActivate(GL_TEXTURE0);
         mvp = proj * view * cubeTransform.getGlobalTransformMatrix();
 
-        s1.run();
-        s1.setUniform("mvp", mvp);
-        //s2.setUniform("tex0", 0);
+        s2.run();
+        s2.setUniform("mvp", mvp);
+        s2.setUniform("tex0", 0);
 
         vao_cube.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         vao_cube.unbind();
 
         mvp = proj * view * cubeChildTransform.getGlobalTransformMatrix();
-        s1.run();
-        s1.setUniform("mvp", mvp);
+        s2.setUniform("mvp", mvp);
         vao_cube.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         vao_cube.unbind();

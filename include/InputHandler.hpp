@@ -1,8 +1,8 @@
 #ifndef INPUT_HANDLER_HPP
 #define INPUT_HANDLER_HPP
 
-#include "../include/SDL_Context.hpp"
-#include "../include/header_only/Event.hpp"
+#include "SDL_Context.hpp"
+#include "header_only/Event.hpp"
 #include <string>
 #include <vector>
 #include <algorithm>

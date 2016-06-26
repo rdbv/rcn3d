@@ -22,16 +22,17 @@ bool InputHandler::pollEvent(Event* ev) {
     else if(e.type == SDL_MOUSEBUTTONUP){
         mouseEventsProxy[ev->getMouseButton()] = false;
     }
+    return true;
 }
 
 bool InputHandler::isKeyDown(int c) {
     return keyboardEventsProxy.find(c) != keyboardEventsProxy.end() &&
-    keyboardEventsProxy[c] == true;
+    keyboardEventsProxy[c] == true;     
 }
 
 bool InputHandler::isMouseButtonDown(int b) {
     return mouseEventsProxy.find(b) != mouseEventsProxy.end() &&
-    mouseEventsProxy[b] == true;
+    mouseEventsProxy[b] == true; 
 }
 
 double InputHandler::getMouseX() {

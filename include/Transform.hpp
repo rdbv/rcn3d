@@ -1,7 +1,7 @@
 #ifndef TRANSFORM_HPP
 #define TRANSFORM_HPP
 
-#include <header_only/Math.hpp>
+#include "header_only/Math.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>

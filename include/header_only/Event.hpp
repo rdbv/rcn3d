@@ -1,4 +1,12 @@
-#include "../include/SDL_Context.hpp"
+#ifndef EVENT_HPP
+#define EVENT_HPP
+
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#elif _WIN32
+#include <SDL/SDL.h>
+#else
+#endif
 
 namespace rcn3d {
 
@@ -101,4 +109,7 @@ struct Event {
     }
 };
 
-}
+} // namespace rcn3d
+
+#endif
+
