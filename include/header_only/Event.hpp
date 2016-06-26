@@ -30,7 +30,7 @@ struct Event {
         SDL_ControllerAxisEvent caxis;      /**< Game Controller axis event data */
         SDL_ControllerButtonEvent cbutton;  /**< Game Controller button event data */
         SDL_ControllerDeviceEvent cdevice;  /**< Game Controller device event data */
-        SDL_AudioDeviceEvent adevice;
+        //SDL_AudioDeviceEvent adevice;
         SDL_QuitEvent quit;             /**< Quit request event data */
         SDL_UserEvent user;             /**< Custom event data */
         SDL_SysWMEvent syswm;           /**< System dependent window event data */
@@ -60,9 +60,9 @@ struct Event {
 
     void initFromSDL_Event(SDL_Event* e) {
         type = e->type;
-        if(e->type == SDL_AUDIODEVICEADDED || e->type == SDL_AUDIODEVICEREMOVED)
+        /*if(e->type == SDL_AUDIODEVICEADDED || e->type == SDL_AUDIODEVICEREMOVED)
             adevice = e->adevice;
-        else if(e->type == SDL_CONTROLLERAXISMOTION)
+        else */if(e->type == SDL_CONTROLLERAXISMOTION)
             caxis = e->caxis;
         else if(e->type == SDL_CONTROLLERBUTTONDOWN || e->type == SDL_CONTROLLERBUTTONUP)
             cbutton = e->cbutton;
