@@ -17,7 +17,7 @@ namespace rcn3d {
 class FrameTime {
 public:
     FrameTime() {
-        frameTimes.fill(16.0f);
+        frameTimes.fill(16);
     }
     ~FrameTime() {}
 
@@ -50,7 +50,7 @@ private:
         float avg = (std::accumulate(frameTimes.begin(), frameTimes.end(), 0.0f)) / (numberOfSamples);
         static int c = 0;
         if(avg > 0 && c > 60) {
-            std::cout << 1000.0f / avg << "\n";
+            //std::cout << 1000.0f / avg << "\n";
             c = 0;
         }
         c++;

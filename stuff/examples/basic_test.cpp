@@ -130,24 +130,31 @@ rcn3d::VertexArray get_cube() {
 // Trójkąt, się powinien pokazać.
 // i wykresy.
 int main(int argc, char ** argv) {
+    rcn3d::Timer timer;
+    timer.start();
+
     init_engine();
+
+    Uint32 result = timer.stop();
+    std::cout << result << std::endl;
+
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
     rcn3d::Transform cubeTransform, cubeChildTransform;
     cubeChildTransform.moveX(1.0);
     cubeChildTransform.setScale(0.25, 0.25, 0.25);
     cubeChildTransform.setParent(&cubeTransform);
-    cubeTransform.moveY(-2.0);
+    cubeTransform.moveY(-2.0f);
 
     // Shaders
-    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
-                            "stuff/shaders/test0.fs");
+    rcn3d::ShaderProgram s0("../stuff/shaders/test0.vs",
+                            "../stuff/shaders/test0.fs");
 
-    rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
-                            "stuff/shaders/test1_color.fs");
+    rcn3d::ShaderProgram s1("../stuff/shaders/test1_color.vs",
+                            "../stuff/shaders/test1_color.fs");
 
-    rcn3d::ShaderProgram s2("stuff/shaders/test1_texture.vs",
-                            "stuff/shaders/test1_texture.fs");
+    rcn3d::ShaderProgram s2("../stuff/shaders/test1_texture.vs",
+                            "../stuff/shaders/test1_texture.fs");
 
     s0.addUniform("mvp");
     s1.addUniform("mvp");
@@ -173,7 +180,7 @@ int main(int argc, char ** argv) {
     // Kostka
     rcn3d::VertexArray vao_cube = get_cube();
     // tekstura kostki (do sciagniecia z neta)
-    rcn3d::Texture tex0 = txl.loadNormalTexture("stuff/textures/awesomeface.png");
+    rcn3d::Texture tex0 = txl.loadNormalTexture("../stuff/textures/awesomeface.png");
 
     rcn3d::FrameTime frameTime;
 

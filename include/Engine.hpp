@@ -7,6 +7,7 @@
 #include "../include/header_only/DebugCamera.hpp"
 #include "../include/header_only/FrameTime.hpp"
 #include "../include/header_only/Texture.hpp"
+#include "../include/header_only/Timer.hpp"
 
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"
