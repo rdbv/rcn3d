@@ -24,6 +24,7 @@ public:
         assert(n != 0);
         size = n;
         vx.resize(n);
+        vb_data.resize(n);
         glGenVertexArrays(size, &vx[0]); 
     }
 
@@ -32,10 +33,13 @@ public:
         printf("[%s] size:%lu\n", __FUNCTION__, size);
 #endif
         glDeleteVertexArrays(size, &vx[0]);
+        for(auto &buf : vb_data)
+            buf.deleteVertexBuffers();
     }
 
-    void addVertexBuffer(std::size_t vao_id, std::size_t vbo_id, VertexBuffer buf) {
-        vx_data[vao_id][vbo_id] = buf;
+    void addVertexBuffer(std::size_t vao_id, VertexBuffer buf) {
+        assert(vao_id < size);
+        vb_data[vao_id] = buf;
     }
 
     inline void bind(std::size_t n) {
@@ -48,7 +52,7 @@ public:
     }
 
 private:
-    std::map<GLuint, std::map<GLuint, VertexBuffer>> vx_data;
+    std::vector<VertexBuffer> vb_data;
     std::vector<GLuint> vx;
     std::size_t size = 1;
 };

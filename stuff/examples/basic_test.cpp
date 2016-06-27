@@ -123,7 +123,7 @@ rcn3d::VertexArray get_cube() {
 
     vao.unbind();
 
-    vao.addVertexBuffer(0, 0, vbo);
+    vao.addVertexBuffer(0, vbo );
     return vao;
 }
 
@@ -147,14 +147,14 @@ int main(int argc, char ** argv) {
     cubeTransform.moveY(-2.0f);
 
     // Shaders
-    rcn3d::ShaderProgram s0("../stuff/shaders/test0.vs",
-                            "../stuff/shaders/test0.fs");
+    rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
+                            "stuff/shaders/test0.fs");
 
-    rcn3d::ShaderProgram s1("../stuff/shaders/test1_color.vs",
-                            "../stuff/shaders/test1_color.fs");
+    rcn3d::ShaderProgram s1("stuff/shaders/test1_color.vs",
+                            "stuff/shaders/test1_color.fs");
 
-    rcn3d::ShaderProgram s2("../stuff/shaders/test1_texture.vs",
-                            "../stuff/shaders/test1_texture.fs");
+    rcn3d::ShaderProgram s2("stuff/shaders/test1_texture.vs",
+                            "stuff/shaders/test1_texture.fs");
 
     s0.addUniform("mvp");
     s1.addUniform("mvp");
@@ -180,7 +180,7 @@ int main(int argc, char ** argv) {
     // Kostka
     rcn3d::VertexArray vao_cube = get_cube();
     // tekstura kostki (do sciagniecia z neta)
-    rcn3d::Texture tex0 = txl.loadNormalTexture("../stuff/textures/awesomeface.png");
+    rcn3d::Texture tex0 = txl.loadNormalTexture("stuff/textures/awesomeface.png");
 
     rcn3d::FrameTime frameTime;
 
