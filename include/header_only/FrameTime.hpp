@@ -51,6 +51,7 @@ private:
         static int c = 0;
         if(avg > 0 && c > 60) {
             //std::cout << 1000.0f / avg << "\n";
+            printf("%f\n", 1000.0f / avg);
             c = 0;
         }
         c++;

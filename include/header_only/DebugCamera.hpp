@@ -18,7 +18,7 @@ public:
 
     float yaw = -90.0f;
     float pitch = 0.0f;
-    float mvSpeed = 3.0f;
+    float mvSpeed = 6.0f;
     float sens = 0.05f;
 
     DebugCamera() {
