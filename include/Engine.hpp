@@ -25,11 +25,12 @@ public:
         return ng;
     }
 
-    SDL_Context context_SDL;
-    TextureLoader tex_loader;
-    Renderer ren;
+    SDL_Context           context_SDL;
+    static TextureLoader& txl;
+    static Renderer&      ren;
 
 private:
+
     Engine() {}
     Engine(const Engine&)   = delete;
     void operator=(Engine&) = delete;

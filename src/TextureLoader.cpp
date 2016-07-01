@@ -3,15 +3,10 @@
 using namespace rcn3d;
 
 Texture TextureLoader::loadNormalTexture(std::string name) {
-    Texture* t = checkForExistingTexture (name);
-    if(t != nullptr) {
-        return *t;
-    } else {
-        t = new Texture();
-    }
 
-    t->createTexture();
-    t->bind(GL_TEXTURE_2D);
+    Texture t;
+    t.createTexture();
+    t.bind(GL_TEXTURE_2D);
 
     FREE_IMAGE_FORMAT format = FreeImage_GetFileType(name.c_str(), 0);
     if(format == -1) {
@@ -56,20 +51,6 @@ Texture TextureLoader::loadNormalTexture(std::string name) {
         FreeImage_Unload(bitmap);
     }
 
-    Uint32 hashName = std::hash<std::string>()(name);
-    textureMap.emplace (std::make_pair(hashName, t));
-    return *t;
+    return t;
 }
-
-Texture *TextureLoader::checkForExistingTexture (std::string name) {
-    Uint32 nameHash = std::hash <std::string> ()(name);
-    auto it = textureMap.find (nameHash);
-    if(it != textureMap.end()) {
-        return it->second;
-    }
-    return nullptr;
-}
-
-
-
 

@@ -1,7 +1,7 @@
 CC= g++
 CFLAGS= -std=c++11 -Wall -O0
 LINK= -lGL -lGLEW -lSDL2
-LINK_OBJ= bin/SDL_Context.o \
+LINK_OBJ= bin/SDL_Context.o bin/Engine.o \
 		  bin/Shader.o bin/ShaderProgram.o  bin/TextureLoader.o bin/Renderer.o
 
 all: SDL_Context Shader ShaderProgram Engine TextureLoader \

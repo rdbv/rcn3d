@@ -7,6 +7,7 @@
 #include <SDL/SDL.h>
 #else
 #endif
+
 #include <string>
 #include <FreeImage.h>
 #include <cstdio>
@@ -20,12 +21,18 @@ namespace rcn3d {
 class TextureLoader
 {
 public:
+    static TextureLoader& getInstance() {
+        static TextureLoader tx;
+        return tx;
+    }
+
     Texture loadNormalTexture(std::string);
-
+    
 private:
-    Texture* checkForExistingTexture(std::string);
 
-    std::map <Uint32, Texture*> textureMap;
+    TextureLoader() {}
+    TextureLoader(const TextureLoader&) = delete;
+    void operator=(TextureLoader&)      = delete;
 
 };
 

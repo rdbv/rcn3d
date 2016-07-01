@@ -8,12 +8,21 @@ namespace rcn3d {
 
 /* Pipeline wrapper */
 
-class Renderer
+class Renderer 
 {
 public:
 
+    static Renderer& getInstance() {
+        static Renderer r;
+        return r;
+    }
+
     void enableWireframe(bool);
 
+private:
+    Renderer() {}
+    Renderer(const Renderer&)   = delete;
+    void operator=(Renderer&)   = delete;
 };
 
 } // namespace rcn3d
