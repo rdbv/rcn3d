@@ -1,2 +1,2 @@
-kamera header only TODO // klasa
-klasa frame time (od liczenia delty itp)
+ładowanie modeli (assimpem albo nie)
+

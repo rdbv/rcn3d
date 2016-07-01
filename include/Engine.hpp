@@ -12,6 +12,7 @@
 #include "../include/SDL_Context.hpp"
 #include "../include/ShaderProgram.hpp"
 #include "../include/TextureLoader.hpp"
+#include "../include/Renderer.hpp"
 
 namespace rcn3d {
 
@@ -26,6 +27,7 @@ public:
 
     SDL_Context context_SDL;
     TextureLoader tex_loader;
+    Renderer ren;
 
 private:
     Engine() {}

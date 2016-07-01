@@ -2,10 +2,11 @@ CC= g++
 CFLAGS= -std=c++11 -Wall -O0
 LINK= -lGL -lGLEW -lSDL2
 LINK_OBJ= bin/SDL_Context.o \
-		  bin/Shader.o bin/ShaderProgram.o  bin/TextureLoader.o
+		  bin/Shader.o bin/ShaderProgram.o  bin/TextureLoader.o bin/Renderer.o
 
 all: SDL_Context Shader ShaderProgram Engine TextureLoader \
 	 Transform \
+	 Renderer \
 	 test \
 	 basic_test
 
@@ -34,6 +35,9 @@ TextureLoader:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
 
 Transform:
+	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
+
+Renderer:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
 
 # Other
