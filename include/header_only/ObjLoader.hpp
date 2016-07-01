@@ -1,7 +1,6 @@
 #ifndef OBJ_LOADER_HPP
 #define OBJ_LOADER_HPP
 
-using namespace rcn3d;
 
 #include <cstdio>
 #include <cstring>
@@ -14,11 +13,15 @@ using namespace rcn3d;
 
 namespace rcn3d {
 
+    using namespace rcn3d;
+
 struct ObjectData {
 
     std::vector<glm::vec3> vx;
     std::vector<glm::vec3> uv;
     std::vector<glm::vec3> normals;
+    std::vector<glm::vec3> vx_ebo, uv_ebo, normals_ebo;
+
     char name[BUFFER_LENGTH];
     bool isUVIncluded;
 
@@ -33,13 +36,16 @@ public:
         
         VertexBuffer m_vbo;
 
-        m_vao.createVertexArrays(1);
-        m_vbo.createVertexBuffers(2)        
+        //m_vao.createVertexArrays(1);
+        //m_vbo.createVertexBuffers(2);
+
+        return false;
     }
 
     bool loadObjData(const char* path, ObjectData& dat) {
         FILE* f = fopen(path, "r");
         char line[BUFFER_LENGTH];
+        std::vector<glm::vec3>* data_ptr = nullptr;
 
         if(!f) {
             printf("Failed to load %s\n", path);
@@ -81,14 +87,29 @@ public:
             if(fc =='f') {
                 char* beg = line+2;
                 char* sls_beg  = strchr(beg, '/');
+                unsigned int data[9];
 
                 if(!sls_beg)
                     return false;
 
                 dat.isUVIncluded = sls_beg[0] != sls_beg[1]; 
-
+                               
+                
+                                        
                 if(dat.isUVIncluded) {
+
+                sscanf(beg, "%d/%d/%d %d/%d/%d %d/%d/%d", &data[0], &data[1], &data[2], 
+                                                          &data[3], &data[4], &data[5], 
+                                                          &data[6], &data[7], &data[8]);
+
                 }
+                else {
+                    sscanf(beg, "%d//%d %d//%d %d//%d", &data[0], &data[2],
+                                                        &data[3], &data[5],
+                                                        &data[6], &data[8]);
+                                                        
+                }
+
 
 
             }
@@ -97,6 +118,7 @@ public:
 
         return true;
     }
+
 };
 
 } // namespace rcn3d

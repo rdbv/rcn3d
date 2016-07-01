@@ -51,6 +51,8 @@ public:
         glBindVertexArray(0);
     }
 
+    std::size_t poly_count = 0;
+    GLenum poly_type = GL_TRIANGLES;
 private:
     std::vector<VertexBuffer> vb_data;
     std::vector<GLuint> vx;

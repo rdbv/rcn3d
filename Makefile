@@ -1,8 +1,8 @@
 CC= g++
-CFLAGS= -std=c++11 -Wall -O3
+CFLAGS= -std=c++11 -Wall -O0
 LINK= -lGL -lGLEW -lSDL2
-LINK_OBJ= bin/SDL_Context.o bin/Engine.o \
-		  bin/Shader.o bin/ShaderProgram.o  bin/TextureLoader.o 
+LINK_OBJ= bin/SDL_Context.o \
+		  bin/Shader.o bin/ShaderProgram.o  bin/TextureLoader.o
 
 all: SDL_Context Shader ShaderProgram Engine TextureLoader \
 	 Transform \
@@ -10,7 +10,10 @@ all: SDL_Context Shader ShaderProgram Engine TextureLoader \
 	 basic_test
 
 test:
-	$(CC) $(CFLAGS) $@.cpp -o main $(LINK_OBJ) -lGL -lGLEW -lSDL2 -lfreeimage
+	$(CC) $(CFLAGS) $@.cpp -o main $(LINK_OBJ) -lGL -lGLEW -lSDL2 -lfreeimage 
+
+test1:
+	$(CC) $(CFLAGS) $@.cpp -o main  -lassimp
 
 Engine:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o 
@@ -41,5 +44,9 @@ window:
 basic_test:
 	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) \
 		bin/InputHandler.o bin/Transform.o -lGL -lGLEW -lSDL2 -lfreeimage
+basic_refactored:
+	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) \
+		-lGL -lGLEW -lSDL2 -lfreeimage 
+
 Math: test
 
