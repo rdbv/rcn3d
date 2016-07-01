@@ -10,6 +10,8 @@
 #include <string>
 #include <FreeImage.h>
 #include <cstdio>
+#include <map>
+#include <functional>
 
 #include "header_only/Texture.hpp"
 
@@ -18,7 +20,12 @@ namespace rcn3d {
 class TextureLoader
 {
 public:
-    Texture loadNormalTexture(const std::string&);
+    Texture loadNormalTexture(std::string);
+
+private:
+    Texture* checkForExistingTexture(std::string);
+
+    std::map <Uint32, Texture*> textureMap;
 
 };
 
