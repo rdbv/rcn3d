@@ -16,14 +16,16 @@ namespace rcn3d {
 
 class ShaderProgram {
 public:
-    ShaderProgram() = delete;
+    ShaderProgram(){};// = delete;
     ShaderProgram(const std::string&, const std::string&);
 
     inline GLuint getProgram() {
         return pID;
     }
 
-    std::unordered_map<std::string, GLuint> 
+    void load(const std::string&, const std::string&);
+
+    std::unordered_map<std::string, GLuint>
     addUniforms(const std::initializer_list<std::string>&);
 
     GLint addUniform(const std::string&);

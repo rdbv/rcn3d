@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
     glm::mat4 mx_triangle0 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f));
 
     /* Enable wireframe */
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    renderer.enableWireframe(true);
 
     while(true) {
         ft.begin();
