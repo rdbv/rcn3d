@@ -11,7 +11,7 @@
 
 static rcn3d::Engine& ng = rcn3d::Engine::getInstance();
 static rcn3d::InputHandler& inputHandler = rcn3d::InputHandler::getInstance();
-static rcn3d::TextureLoader& txl = ng.tex_loader;
+static rcn3d::TextureLoader& txl = ng.txl;
 
 static rcn3d::DebugCamera cam;
 

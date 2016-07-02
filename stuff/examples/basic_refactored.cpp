@@ -3,10 +3,11 @@
 
 // SET THIS CORRECT !!!!
 #define WINDOW_SIZE glm::vec2(800, 800)
-#define WINDOW_POS  glm::vec2(2100, 0)
+#define WINDOW_POS  glm::vec2(0, 0)
 
 static rcn3d::Engine &ng = rcn3d::Engine::getInstance();
-static rcn3d::TextureLoader __attribute__((unused)) &txl = ng.tex_loader;
+static rcn3d::Renderer &renderer = ng.ren;
+static rcn3d::TextureLoader __attribute__((unused)) &txl = ng.txl;
 
 static rcn3d::DebugCamera cam;
 static rcn3d::FrameTime ft;
@@ -40,6 +41,7 @@ void camMovement(std::map<Uint32, bool>& ks) {
     if(ks['s']) cam.processKeyboard(rcn3d::BACKWARD, ft.getDeltaTime());
     if(ks['a']) cam.processKeyboard(rcn3d::LEFT, ft.getDeltaTime());
     if(ks['d']) cam.processKeyboard(rcn3d::RIGHT, ft.getDeltaTime());
+    if(ks['p']) renderer.enableWireframe(false);
 }
 
 /* === MODEL GENERATING === */
@@ -72,14 +74,14 @@ rcn3d::VertexArray get_triangle_ebo() {
 
     // create OpenGL objects
     vao.createVertexArrays(1);
-    vbo.createVertexBuffers(4);  
+    vbo.createVertexBuffers(4);
 
     vao.bind(0);
 
     // enable vertex array in shader
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-  
+
     // === Vertex
     vbo.bind(GL_ARRAY_BUFFER, 0);
     // set data
@@ -139,7 +141,7 @@ int main(int argc, char** argv) {
         glClearColor(0.25f, 0.0f, 0.0f, 0.0f);
 
         if(keys['q']) break;
-        
+
         view = cam.getViewMatrix();
 
         s_col.run();
@@ -150,7 +152,7 @@ int main(int argc, char** argv) {
             glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (GLvoid*)0);
         m_triangle0.unbind();
 
-        // === End of render 
+        // === End of render
 
         ng.context_SDL.swapBuffers();
         ft.end();
