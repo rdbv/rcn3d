@@ -1,2 +1,7 @@
+co kto robi, tu sie wpisac.
+Renderer, VAO, VBO - rdbv
+
+========================================
+co do zrobienia, tu wpisywac.
 ładowanie modeli (assimpem albo nie)
 
