@@ -1,16 +1,13 @@
 #include "../include/ShaderProgram.hpp"
 
-rcn3d::ShaderProgram::ShaderProgram(const std::string& pathVertex,
-                                    const std::string& pathFragment
+rcn3d::ShaderProgram::ShaderProgram(const std::string& pathVertex, 
+                                    const std::string& pathFragment 
                                    /*, here will be geo-shdr path */ ) {
-    load(pathVertex, pathFragment);
-}
 
-void rcn3d::ShaderProgram::load(const std::string& pathVertex, const std::string& pathFragment) {
     pID = glCreateProgram();
-    #ifdef __SHADER_DEBUG_INFO_DUMP
-        printf("[ShaderProgram::ShaderProgram] Created program %d\n", pID);
-    #endif
+#ifdef __SHADER_DEBUG_INFO_DUMP
+    printf("[ShaderProgram::ShaderProgram] Created program %d\n", pID);
+#endif
 
     rcn3d::Shader vx(GL_VERTEX_SHADER);
     rcn3d::Shader fg(GL_FRAGMENT_SHADER);
@@ -54,13 +51,13 @@ GLint rcn3d::ShaderProgram::addUniform(const std::string& name) {
     return v;
 }
 
-std::unordered_map<std::string, GLuint>
+std::unordered_map<std::string, GLuint> 
 rcn3d::ShaderProgram::addUniforms(const std::initializer_list<std::string>& lst) {
 
     std::unordered_map<std::string, GLuint> uniforms;
     for(const auto& uni : lst) {
         GLint v = glGetUniformLocation(pID, uni.c_str());
-        if(v == -1)
+        if(v == -1) 
             throw std::runtime_error("Failed to get uniform (" + uni + "} location\n");
         uniforms[uni] = v;
         uniformsMap[uni] = v;

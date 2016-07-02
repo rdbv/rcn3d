@@ -1,8 +1,6 @@
 #include "../../include/Engine.hpp"
 #include "../../include/InputHandler.hpp"
-#include "../../include/Renderer.hpp"
 #include "../../include/Transform.hpp"
-#include "../../include/Sprite.hpp"
 #include <map>
 #include <algorithm>
 #include <functional>
@@ -14,7 +12,6 @@
 static rcn3d::Engine& ng = rcn3d::Engine::getInstance();
 static rcn3d::InputHandler& inputHandler = rcn3d::InputHandler::getInstance();
 static rcn3d::TextureLoader& txl = ng.txl;
-static rcn3d::Renderer& renderer = ng.ren;
 
 static rcn3d::DebugCamera cam;
 
@@ -29,7 +26,6 @@ void init_engine() {
     proj = glm::perspective(glm::radians(45.0f), set.windowSize.x / set.windowSize.y, 0.1f, 100.0f);
 
     ng.context_SDL.initContext(set);
-    renderer.initRenderer();
 }
 
 rcn3d::VertexArray get_triangle() {
@@ -144,19 +140,11 @@ int main(int argc, char ** argv) {
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    // tekstura kostki (do sciagniecia z neta)
-    rcn3d::Texture tex0 = txl.loadNormalTexture("stuff/textures/awesomeface.png");
-
     rcn3d::Transform cubeTransform, cubeChildTransform;
     cubeChildTransform.moveX(1.0);
     cubeChildTransform.setScale(0.25, 0.25, 0.25);
     cubeChildTransform.setParent(&cubeTransform);
     cubeTransform.moveY(-2.0f);
-
-    rcn3d::Sprite testSprite = rcn3d::Sprite(&tex0);
-    //testSprite.setScale(2, 2, 2);
-    testSprite.translate(2, 0, 4);
-    testSprite.setParent(&cubeChildTransform);
 
     // Shaders
     rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
@@ -191,7 +179,8 @@ int main(int argc, char ** argv) {
 
     // Kostka
     rcn3d::VertexArray vao_cube = get_cube();
-
+    // tekstura kostki (do sciagniecia z neta)
+    rcn3d::Texture tex0 = txl.loadNormalTexture("stuff/textures/awesomeface.png");
 
     rcn3d::FrameTime frameTime;
 
@@ -280,8 +269,6 @@ int main(int argc, char ** argv) {
         vao_cube.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         vao_cube.unbind();
-
-        testSprite.draw(&renderer, proj, view);
 
         ng.context_SDL.swapBuffers();
         frameTime.end();
