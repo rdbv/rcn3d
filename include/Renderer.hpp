@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+#include "header_only/Renderable.hpp"
 #include "header_only/VertexArray.hpp"
 
 namespace rcn3d {

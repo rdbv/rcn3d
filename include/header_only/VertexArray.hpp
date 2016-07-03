@@ -17,7 +17,7 @@ namespace rcn3d {
 class VertexArray 
 {
 public:
-    inline void createVertexArrays(std::size_t n) {
+    inline void createVertexArrays(std::size_t n = 1) {
 #ifdef VAO_DEBUG_PRINTF
         printf("[%s] size:%lu\n", __FUNCTION__, size);
 #endif
@@ -40,6 +40,11 @@ public:
     void addVertexBuffer(std::size_t vao_id, VertexBuffer buf) {
         assert(vao_id < size);
         vb_data[vao_id] = buf;
+    }
+
+    inline VertexBuffer getVertexBuffer(std::size_t vao_id) {
+        assert(vao_id < size);
+        return vb_data[vao_id];
     }
 
     inline void bind(std::size_t n) {

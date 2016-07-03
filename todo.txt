@@ -1,6 +1,7 @@
 co kto robi, tu sie wpisac.
-Renderer, VAO, VBO - rdbv
-
+VAO, VBO - rdbv
+ModelLoader - zgub4
+Renderer to chyba wszyscy po trochu
 ========================================
 co do zrobienia, tu wpisywac.
 ładowanie modeli (assimpem albo nie)

@@ -13,6 +13,7 @@
 #include "../include/ShaderProgram.hpp"
 #include "../include/TextureLoader.hpp"
 #include "../include/Renderer.hpp"
+#include "../include/Transform.hpp"
 
 namespace rcn3d {
 
