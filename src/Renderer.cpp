@@ -29,27 +29,70 @@ void Renderer::setLineWidth(float w) {
     glLineWidth(w);
 }
 
+/* Jest glDrawArrays ale prawdopodobnie będą używane bufory indeksowe(glDrawElements), 
+ * więc to jest do przeróbki
+ */
 
 void Renderer::renderAll() {
     glm::mat4 mvp;
     for(const auto& p : objects) {
         auto obj = p.second;
-        obj->getShader()->run();
+        auto vao = obj->getVertexArray();
+        auto shr = obj->getShader();
 
-        obj->getVertexArray()->bind(0);
+        shr->run();
+
+        vao->bind(0);
+
         mvp = env.mx_proj * env.mx_view * obj->getGlobalTransformMatrix();
-        obj->getShader()->setUniform("mvp", mvp);
-        
-        glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        obj->getVertexArray()->unbind();
+        shr->setUniform("mvp", mvp);
+        
+        glDrawArrays(vao->getDrawType(), 0, vao->getVertexCount());
+
+        vao->unbind();
     }
 }
 
 Renderable* Renderer::createRenderable(std::string n) {
-    if(objects.count(n))
+    if(objects.count(n)) {
+#ifdef _RENDERER_DUMP_ERRORS
+        printf("[%s] Object %s already exist in map!\n", __FUNCTION__, n.c_str());
+#endif
         return nullptr;
+    }
     objects[n] = new Renderable();
     return objects[n];
+}
+
+Renderable* Renderer::getRenderable(std::string n) {
+    if(objects.count(n) == 0)
+        return nullptr;
+    else 
+        return objects[n];
+}
+
+void Renderer::destroyAllRenderables() {
+    for(const auto& p : objects) {
+        auto obj = p.second;
+        obj->getVertexArray()->deleteVertexArrays();
+        delete obj;
+    }
+}
+
+bool Renderer::destroyRenderable(std::string n) {
+    if(objects.count(n) == 0) {
+#ifdef _RENDERER_DUMP_ERRORS
+        printf("[%s] Object %s doesn't exists in map!\n", __FUNCTION__, n.c_str());
+#endif
+        return false;
+    }
+    else { 
+        auto obj = objects[n];
+        obj->getVertexArray()->deleteVertexArrays();
+
+        delete objects[n];
+    }
+    return true;
 }
 

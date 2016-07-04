@@ -2,6 +2,8 @@
 #define RENDERER_HPP
 
 #define GLEW_STATIC 
+#define _RENDERER_DUMP_ERRORS
+
 #include <map>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -38,10 +40,12 @@ public:
     void setLineWidth(float);
 
     Renderable* createRenderable(std::string);
+    Renderable* getRenderable(std::string);
+
+    void destroyAllRenderables();
+    bool destroyRenderable(std::string);
 
     void renderAll();
-    /* Simple render functions */
-    //void renderVertexArray(GLenum
 
 private:
 

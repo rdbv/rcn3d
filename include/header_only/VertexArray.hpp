@@ -56,10 +56,27 @@ public:
         glBindVertexArray(0);
     }
 
+    inline void setVertexCount(std::size_t n) {
+        poly_count = n;
+    }
+
+    inline std::size_t getVertexCount() {
+        return poly_count;
+    }
+    
+    inline void setDrawType(GLenum type) {
+        poly_type = type;
+    }
+
+    inline GLenum getDrawType() {
+        return poly_type;
+    }
+
+private:
+    
     std::size_t poly_count = 0;
     GLenum poly_type = GL_TRIANGLES;
 
-private:
     std::vector<VertexBuffer> vb_data;
     std::vector<GLuint> vx;
     std::size_t size = 1;
