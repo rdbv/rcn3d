@@ -2,6 +2,7 @@
 #define RENDERER_HPP
 
 #define GLEW_STATIC 
+#include <map>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
@@ -30,15 +31,22 @@ public:
     /* Functions changing GL state */
     void clearScreen(glm::vec4);
 
+    void setProjMatrix(glm::mat4);
+    void setViewMatrix(glm::mat4);
+
     void setWireframeMode(bool);
     void setLineWidth(float);
 
+    Renderable* createRenderable(std::string);
+
+    void renderAll();
     /* Simple render functions */
     //void renderVertexArray(GLenum
 
 private:
 
-    Env env;
+    static Env env;
+    static std::map<std::string, Renderable*> objects;
 
     Renderer() {}
     Renderer(const Renderer&)   = delete;

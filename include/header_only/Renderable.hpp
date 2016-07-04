@@ -3,6 +3,7 @@
 
 #include "../Transform.hpp"
 #include "../Renderer.hpp"
+#include "../ShaderProgram.hpp"
 
 #include "VertexArray.hpp"
 
@@ -12,14 +13,26 @@ class Renderable : public Transform {
 
 public:
     
-    void setVertexArray(VertexArray vao) {
+    inline void setVertexArray(VertexArray* vao) {
         vao_data = vao;
+    }
+
+    inline void setShader(ShaderProgram* shdr) {
+        shader = shdr;
+    }
+
+    inline VertexArray* getVertexArray() {
+        return vao_data;
+    }
+
+    inline ShaderProgram* getShader() {
+        return shader;
     }
 
 
 private:
-    VertexArray vao_data;
-    
+    VertexArray*   vao_data = nullptr;
+    ShaderProgram* shader   = nullptr;    
 };
 
 } // namespace rcn3d
