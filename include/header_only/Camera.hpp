@@ -1,16 +1,17 @@
 #ifndef DEBUG_CAMERA_HPP
 #define DEBUG_CAMERA_HPP
 
+#include "../Transform.hpp"
+
 namespace rcn3d {
 
 enum CameraDirection {
     FORWARD, BACKWARD, LEFT, RIGHT
 };
 
-class DebugCamera 
+class Camera: public Transform
 {
 public:
-    glm::vec3 position = glm::vec3(0.0f, 0.0f, 5.0f);
     glm::vec3 front = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
     glm::vec3 right;
@@ -21,12 +22,12 @@ public:
     float mvSpeed = 6.0f;
     float sens = 0.05f;
 
-    DebugCamera() {
+    Camera() {
         updateCameraVectors();
     }
 
     glm::mat4 getViewMatrix() {
-        return glm::lookAt(position, position + front, up);
+        return glm::lookAt(getPosition(), getPosition() + front, up);
     }
 
     void processMouse(float xoff, float yoff) {
@@ -40,13 +41,13 @@ public:
 
         updateCameraVectors();
     }
-    
+
     void processKeyboard(CameraDirection dir, float delta) {
         float vel = mvSpeed * delta;
-        if(dir == FORWARD)  position += front * vel;
-        if(dir == BACKWARD) position -= front * vel;
-        if(dir == LEFT)     position -= right * vel;
-        if(dir == RIGHT)    position += right * vel;
+        if(dir == FORWARD)  translate(vel*front);
+        if(dir == BACKWARD) translate(-vel*front);
+        if(dir == LEFT)     translate(-vel*right);
+        if(dir == RIGHT)    translate(vel*right);
     }
 
     void updateCameraVectors() {
@@ -63,3 +64,4 @@ public:
 } // namespace rcn3d
 
 #endif
+

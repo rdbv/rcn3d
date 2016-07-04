@@ -43,6 +43,41 @@ void Transform::translate(GLfloat dx, GLfloat dy, GLfloat dz) {
     needUpdate=true;
 }
 
+void Transform::translate(glm::vec3 vec) {
+    posX += vec.x;
+    posY += vec.y;
+    posZ += vec.z;
+    needUpdate = true;
+}
+
+void Transform::rotate(GLfloat dx, GLfloat dy, GLfloat dz) {
+    rotX += dx;
+    rotY += dy;
+    rotZ += dz;
+    needUpdate=true;
+}
+
+void Transform::rotate(glm::vec3 vec) {
+    rotX += vec.x;
+    rotY += vec.y;
+    rotZ += vec.z;
+    needUpdate = true;
+}
+
+void Transform::scaleUp(GLfloat dx, GLfloat dy, GLfloat dz) {
+    scaleX += dx;
+    scaleY += dy;
+    scaleZ += dz;
+    needUpdate = true;
+}
+
+void Transform::scaleUp(glm::vec3 vec) {
+    scaleX += vec.x;
+    scaleY += vec.y;
+    scaleZ += vec.z;
+    needUpdate = true;
+}
+
 void Transform::setPosition(GLfloat x, GLfloat y, GLfloat z) {
     posX = x;
     posY = y;
@@ -50,10 +85,38 @@ void Transform::setPosition(GLfloat x, GLfloat y, GLfloat z) {
     needUpdate=true;
 }
 
+void Transform::setPosition(glm::vec3 vec) {
+    posX = vec.x;
+    posY = vec.y;
+    posZ = vec.z;
+    needUpdate = true;
+}
+
+void Transform::setRotation(GLfloat x, GLfloat y, GLfloat z) {
+    rotX = x;
+    rotY = y;
+    rotZ = z;
+    needUpdate = true;
+}
+
+void Transform::setRotation(glm::vec3 vec) {
+    rotX = vec.x;
+    rotY = vec.y;
+    rotZ = vec.z;
+    needUpdate = true;
+}
+
 void Transform::setScale(GLfloat dx, GLfloat dy, GLfloat dz) {
     scaleX = dx;
     scaleY = dy;
     scaleZ = dz;
+    needUpdate=true;
+}
+
+void Transform::setScale(glm::vec3 vec) {
+    scaleX = vec.x;
+    scaleY = vec.y;
+    scaleZ = vec.z;
     needUpdate=true;
 }
 

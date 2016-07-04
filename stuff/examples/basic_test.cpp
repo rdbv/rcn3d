@@ -13,7 +13,7 @@ static rcn3d::Engine& ng = rcn3d::Engine::getInstance();
 static rcn3d::InputHandler& inputHandler = rcn3d::InputHandler::getInstance();
 static rcn3d::TextureLoader& txl = ng.txl;
 
-static rcn3d::DebugCamera cam;
+static rcn3d::Camera cam;
 
 static glm::mat4 proj, view, mvp;
 
@@ -29,6 +29,7 @@ void init_engine() {
 }
 
 rcn3d::VertexArray get_triangle() {
+    cam.moveZ(5);
 
     std::vector<glm::vec3> vx_data{
        {0.5f, -0.5f, 0.0f},

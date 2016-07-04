@@ -6,9 +6,9 @@
 #define WINDOW_POS  glm::vec2(2100, 0)
 
 static rcn3d::Engine &ng = rcn3d::Engine::getInstance();
-static rcn3d::TextureLoader __attribute__((unused)) &txl = ng.tex_loader;
+static rcn3d::TextureLoader __attribute__((unused)) &txl = ng.txl;
 
-static rcn3d::DebugCamera cam;
+static rcn3d::Camera cam;
 static rcn3d::FrameTime ft;
 
 static glm::mat4 proj, view, mvp;
@@ -44,7 +44,7 @@ void camMovement(std::map<Uint32, bool>& ks) {
 
 /* === MODEL GENERATING === */
 
-template<typename T> std::size_t siz(const std::vector<T>& t) { return t.size() * sizeof(T); }
+//template<typename T> std::size_t siz(const std::vector<T>& t) { return t.size() * sizeof(T); }
 
 rcn3d::VertexArray get_triangle_ebo() {
     std::vector<glm::vec3> vx_data {
@@ -72,14 +72,14 @@ rcn3d::VertexArray get_triangle_ebo() {
 
     // create OpenGL objects
     vao.createVertexArrays(1);
-    vbo.createVertexBuffers(4);  
+    vbo.createVertexBuffers(4);
 
     vao.bind(0);
 
     // enable vertex array in shader
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-  
+
     // === Vertex
     vbo.bind(GL_ARRAY_BUFFER, 0);
     // set data
@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
 
     /* Enable wireframe */
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+    cam.moveZ(5);
     while(true) {
         ft.begin();
 
@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
         glClearColor(0.25f, 0.0f, 0.0f, 0.0f);
 
         if(keys['q']) break;
-        
+
         view = cam.getViewMatrix();
 
         s_col.run();
@@ -150,7 +150,7 @@ int main(int argc, char** argv) {
             glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (GLvoid*)0);
         m_triangle0.unbind();
 
-        // === End of render 
+        // === End of render
 
         ng.context_SDL.swapBuffers();
         ft.end();

@@ -22,11 +22,21 @@ class Transform
 
         void setParent(Transform* t);
 
-        void translate(GLfloat dx, GLfloat dy, GLfloat dz=0.f);
         void setPosition(GLfloat x, GLfloat y, GLfloat z=0.f);
+        void setPosition(glm::vec3);
+        void setRotation(GLfloat x, GLfloat y, GLfloat z);
+        void setRotation(glm::vec3);
         void setScale(GLfloat dx, GLfloat dy, GLfloat dz=1.0f);
+        void setScale(glm::vec3);
 
         /* -###- move by d -###- */
+        void translate(GLfloat dx, GLfloat dy, GLfloat dz=0.f);
+        void translate(glm::vec3);
+        void rotate(GLfloat dx, GLfloat dy, GLfloat dz=0.f);
+        void rotate(glm::vec3);
+        void scaleUp(GLfloat dx, GLfloat dy, GLfloat dz=0.f);
+        void scaleUp(glm::vec3);
+
         void rotateX(GLfloat dx){rotX+=dx;needUpdate=true;}
         void rotateY(GLfloat dy){rotY+=dy;needUpdate=true;}
         void rotateZ(GLfloat dz){rotZ+=dz;needUpdate=true;}
@@ -56,6 +66,10 @@ class Transform
         void setRotX(GLfloat x){rotX=x;needUpdate=true;}
         void setRotY(GLfloat y){rotY=y;needUpdate=true;}
         void setRotZ(GLfloat z){rotZ=z;needUpdate=true;}
+
+        glm::vec3 getPosition(){return glm::vec3(posX,posY,posZ);}
+        glm::vec3 getRotation(){return glm::vec3(rotX,rotY,rotZ);}
+        glm::vec3 getScale()   {return glm::vec3(scaleX,scaleY,scaleX);}
 
     private:
         glm::mat4 mxTransform;

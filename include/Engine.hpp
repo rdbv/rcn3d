@@ -1,19 +1,19 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
-#include "../include/header_only/Math.hpp"
-#include "../include/header_only/VertexArray.hpp"
-#include "../include/header_only/VertexBuffer.hpp"
-#include "../include/header_only/DebugCamera.hpp"
-#include "../include/header_only/FrameTime.hpp"
-#include "../include/header_only/Texture.hpp"
-#include "../include/header_only/Timer.hpp"
+#include "header_only/Math.hpp"
+#include "header_only/VertexArray.hpp"
+#include "header_only/VertexBuffer.hpp"
+#include "header_only/Camera.hpp"
+#include "header_only/FrameTime.hpp"
+#include "header_only/Texture.hpp"
+#include "header_only/Timer.hpp"
 
-#include "../include/SDL_Context.hpp"
-#include "../include/ShaderProgram.hpp"
-#include "../include/TextureLoader.hpp"
-#include "../include/Renderer.hpp"
-#include "../include/Transform.hpp"
+#include "SDL_Context.hpp"
+#include "ShaderProgram.hpp"
+#include "TextureLoader.hpp"
+#include "Renderer.hpp"
+#include "Transform.hpp"
 
 namespace rcn3d {
 
