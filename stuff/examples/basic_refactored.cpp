@@ -83,6 +83,9 @@ rcn3d::VertexArray get_triangle() {
     vao.unbind();
     vao.addVertexBuffer(0, vbo);
 
+    vao.setVertexCount(vx_data.size());
+    vao.setDrawType(GL_TRIANGLES);
+
     return vao;
 }
 
@@ -91,8 +94,8 @@ int main(int argc, char** argv) {
     init_engine(glm::vec2(900, 900),
                 glm::vec2(-1, -1));
 
-    rcn3d::ShaderProgram s_col("stuff/shaders/test1_color.vs",
-                               "stuff/shaders/test1_color.fs");
+    rcn3d::ShaderProgram s_col("stuff/shaders/gles_300/test1_color.vs",
+                               "stuff/shaders/gles_300/test1_color.fs");
 
     s_col.addUniform("mvp");
 

@@ -1,14 +1,14 @@
 CC= g++
 CFLAGS= -std=c++11 -Wall -O0
-LINK= -lGL -lGLEW -lSDL2
+LINK= -lGL -lGLEW -lSDL2 -lfreeimage 
 LINK_OBJ= bin/SDL_Context.o bin/Engine.o \
-		  bin/Shader.o bin/ShaderProgram.o  bin/TextureLoader.o bin/Renderer.o bin/Transform.o
+		  bin/Shader.o bin/ShaderProgram.o \
+		  bin/TextureLoader.o bin/Renderer.o \
+		  bin/Transform.o bin/InputHandler.o
 
-all: SDL_Context Shader ShaderProgram Engine TextureLoader \
-	 Transform \
-	 Renderer \
-	 test \
-	 basic_test
+all: SDL_Context Shader ShaderProgram Engine \
+	 TextureLoader Transform Renderer InputHandler \
+	 test basic_test
 
 test:
 	$(CC) $(CFLAGS) $@.cpp -o main $(LINK_OBJ) -lGL -lGLEW -lSDL2 -lfreeimage 
@@ -46,11 +46,10 @@ window:
 	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) -lGL -lGLEW -lSDL2
 
 basic_test:
-	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) \
-		bin/InputHandler.o bin/Transform.o -lGL -lGLEW -lSDL2 -lfreeimage
+	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) $(LINK) 
+
 basic_refactored:
-	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) \
-		-lGL -lGLEW -lSDL2 -lfreeimage 
+	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) $(LINK)
 
 Math: test
 
