@@ -1,7 +1,12 @@
 #ifndef RCN3D_TIMER_HPP
 #define RCN3D_TIMER_HPP
 
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#elif _WIN32
 #include <SDL/SDL.h>
+#else
+#endif
 
 namespace rcn3d {
 
