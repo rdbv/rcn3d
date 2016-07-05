@@ -29,10 +29,18 @@ public:
         return shader;
     }
 
+    inline void setWireframe(bool wfr) {
+        wireframeEnabled = wfr;
+    }
+
+    inline bool getWireframeEnabled() {
+        return wireframeEnabled;
+    }
 
 private:
     VertexArray*   vao_data = nullptr;
     ShaderProgram* shader   = nullptr;    
+    bool wireframeEnabled = false;
 };
 
 } // namespace rcn3d

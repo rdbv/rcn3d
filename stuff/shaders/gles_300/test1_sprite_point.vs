@@ -7,5 +7,5 @@ uniform mat4 mvp;
 void main() {
     out_col = col;
     gl_Position = mvp * vec4(pos, 1.0);
-    gl_PointSize = max(1.0, 15.0f);
+    gl_PointSize = max(1.0, 8.0f);
 }

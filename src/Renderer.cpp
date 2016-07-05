@@ -4,6 +4,7 @@ using namespace rcn3d;
 
 Env Renderer::env;
 std::map<std::string, Renderable*> Renderer::objects;
+bool Renderer::isWireframeEnabled = false;
 
 void Renderer::clearScreen(glm::vec4 color) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -20,9 +21,9 @@ void Renderer::setViewMatrix(glm::mat4 mview) {
 
 void Renderer::setWireframeMode(bool en) {
     if(en)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE), isWireframeEnabled = true;
     else
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL), isWireframeEnabled = false;
 }
 
 void Renderer::setLineWidth(float w) {
@@ -39,6 +40,9 @@ void Renderer::renderAll() {
         auto obj = p.second;
         auto vao = obj->getVertexArray();
         auto shr = obj->getShader();
+        
+        if(obj->getWireframeEnabled()) 
+            setWireframeMode(true);
 
         shr->run();
 
@@ -51,6 +55,7 @@ void Renderer::renderAll() {
         glDrawArrays(vao->getDrawType(), 0, vao->getVertexCount());
 
         vao->unbind();
+        setWireframeMode(false);       
     }
 }
 

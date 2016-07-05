@@ -21,6 +21,7 @@ static std::map<GLenum, const char*> targets {
 enum BufferUsage {
     RCN_VX,
     RCN_COLOR,
+    RCN_UV0,
     RCN_UNUSED
 };
 

@@ -53,6 +53,8 @@ private:
 
     static Env env;
     static std::map<std::string, Renderable*> objects;
+    
+    static bool isWireframeEnabled;
 
     Renderer() {}
     Renderer(const Renderer&)   = delete;
