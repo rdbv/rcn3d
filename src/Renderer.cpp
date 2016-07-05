@@ -96,3 +96,7 @@ bool Renderer::destroyRenderable(std::string n) {
     return true;
 }
 
+Env Renderer::getMatrixEnv() {
+    return env;
+}
+

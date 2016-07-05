@@ -35,7 +35,7 @@ public:
 
     void setProjMatrix(glm::mat4);
     void setViewMatrix(glm::mat4);
-
+    
     void setWireframeMode(bool);
     void setLineWidth(float);
 
@@ -46,6 +46,8 @@ public:
     bool destroyRenderable(std::string);
 
     void renderAll();
+
+    Env getMatrixEnv();
 
 private:
 
