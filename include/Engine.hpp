@@ -8,6 +8,7 @@
 #include "header_only/FrameTime.hpp"
 #include "header_only/Texture.hpp"
 #include "header_only/Timer.hpp"
+#include "header_only/ObjLoader.hpp"
 
 #include "SDL_Context.hpp"
 #include "ShaderProgram.hpp"

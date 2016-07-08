@@ -11,6 +11,7 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 
+
 #define BUFFER_LENGTH 128
 
 namespace rcn3d {
@@ -30,7 +31,7 @@ class ObjLoader
 {
 public:
 
-    bool loadObjData(const std::string& filePath) {
+    bool loadObjData(const std::string& filePath, ObjectData &obj) {
         // Check file extension
         auto p = filePath.end();
         if(!(*p == 'j' && *(p - 1) == 'b' && *(p - 2) == 'o')) {
@@ -46,7 +47,6 @@ public:
         }
 
         std::string buf;
-        ObjectData obj;
         float x, y, z;
         float u, v;
         while(!f.eof()) {
