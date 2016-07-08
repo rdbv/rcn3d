@@ -10,21 +10,12 @@
 #include <glm/glm.hpp>
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
+#include "ObjectData.hpp"
 
-
-#define BUFFER_LENGTH 128
 
 namespace rcn3d {
 
     using namespace rcn3d;
-
-struct ObjectData {
-
-    std::vector<glm::vec3> vx;
-    std::vector<glm::vec2> uv;
-    std::vector<glm::vec3> vn;
-    std::vector <std::vector <glm::ivec3>> faces;
-};
 
 
 class ObjLoader 
@@ -74,7 +65,7 @@ public:
                 std::getline(f, buf);
                 parseFaces(obj.faces, buf);
             } else {
-                printf("Unknown sytanx in .obj file\n");
+                printf("Unknown syntax in .obj file\n");
             }
         }
         return true;
