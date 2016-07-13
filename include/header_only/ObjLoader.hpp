@@ -24,8 +24,8 @@ public:
 
     bool loadObjData(const std::string& filePath, ObjectData &obj) {
         // Check file extension
-        auto p = filePath.end();
-        if(!(*p == 'j' && *(p - 1) == 'b' && *(p - 2) == 'o')) {
+        auto p = filePath.size() - 1;
+        if(!(filePath[p] == 'j' && filePath[p - 1] == 'b' && filePath[p - 2] == 'o')) {
             printf("File has wrong extension!\n");
             return false;
         }
@@ -40,7 +40,9 @@ public:
         std::string buf;
         float x, y, z;
         float u, v;
+        int c = 0;
         while(!f.eof()) {
+            c++;
             f >> buf;
             // Skip if current line is comment
             if(buf[0] == '#') {
@@ -65,7 +67,9 @@ public:
                 std::getline(f, buf);
                 parseFaces(obj.faces, buf);
             } else {
-                printf("Unknown syntax in .obj file\n");
+                printf("Unknown syntax in .obj file\nCounter value %d\n", c);
+                std::getline(f, buf);
+                continue;
             }
         }
         return true;

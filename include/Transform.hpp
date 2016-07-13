@@ -72,7 +72,7 @@ public:
     glm::vec3 getRotation(){return glm::vec3(rotX,rotY,rotZ);}
     glm::vec3 getScale()   {return glm::vec3(scaleX,scaleY,scaleX);}
 
-    rcn3d::ObjectData getObjectData() {return objectData;}
+    rcn3d::ObjectData& getObjectData() {return objectData;}
 
 private:
     glm::mat4 mxTransform;

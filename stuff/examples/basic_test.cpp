@@ -1,5 +1,6 @@
 #include "../../include/Engine.hpp"
 #include "../../include/InputHandler.hpp"
+#include "../../include/header_only/ObjLoader.hpp"
 #include "../../include/Transform.hpp"
 #include <map>
 #include <algorithm>
@@ -12,6 +13,8 @@
 static rcn3d::Engine& ng = rcn3d::Engine::getInstance();
 static rcn3d::InputHandler& inputHandler = rcn3d::InputHandler::getInstance();
 static rcn3d::TextureLoader& txl = ng.txl;
+
+static rcn3d::ObjLoader objLoader;
 
 static rcn3d::Camera cam;
 
@@ -128,6 +131,40 @@ rcn3d::VertexArray get_cube() {
     return vao;
 }
 
+rcn3d::VertexArray get_batman(rcn3d::Transform obj) {
+    rcn3d::VertexArray vao;
+    rcn3d::VertexBuffer vbo;
+
+    std::vector <glm::vec3> vx_data = obj.getObjectData().vx;
+    std::vector <glm::vec2> uv_data = obj.getObjectData().uv;
+
+    vao.createVertexArrays(1);
+    vbo.createVertexBuffers(2);
+
+    vao.bind(0);
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    vbo.bind(GL_ARRAY_BUFFER, 0);
+    vbo.bufferData_gl(&vx_data[0], siz(vx_data));
+    vbo.vxAttribPtr_gl(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (GLvoid*)0);
+    vbo.setUsage(RCN_VX);
+
+    vbo.bind(GL_ARRAY_BUFFER, 1);
+    vbo.bufferData_gl(&uv_data[0], siz(uv_data));
+    vbo.vxAttribPtr_gl(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (GLvoid*)0);
+    vbo.setUsage(RCN_UV0);
+
+    vao.unbind();
+
+    vao.addVertexBuffer(0, vbo);
+    vao.setVertexCount(vx_data.size());
+    vao.setDrawType(GL_TRIANGLES);
+
+    return vao;
+}
+
 // Trójkąt, się powinien pokazać.
 // i wykresy.
 int main(int argc, char ** argv) {
@@ -146,6 +183,10 @@ int main(int argc, char ** argv) {
     cubeChildTransform.setScale(0.25, 0.25, 0.25);
     cubeChildTransform.setParent(&cubeTransform);
     cubeTransform.moveY(-2.0f);
+
+    rcn3d::Transform batmanObj;
+    batmanObj.moveY(5.0f);
+    objLoader.loadObjData("stuff/batman.obj", batmanObj.getObjectData());
 
     // Shaders
     rcn3d::ShaderProgram s0("stuff/shaders/test0.vs",
@@ -182,6 +223,8 @@ int main(int argc, char ** argv) {
     rcn3d::VertexArray vao_cube = get_cube();
     // tekstura kostki (do sciagniecia z neta)
     rcn3d::Texture tex0 = txl.loadNormalTexture("stuff/textures/awesomeface.png");
+
+    rcn3d::VertexArray vao_batman = get_batman(batmanObj);
 
     rcn3d::FrameTime frameTime;
 
@@ -270,6 +313,16 @@ int main(int argc, char ** argv) {
         vao_cube.bind(0);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         vao_cube.unbind();
+
+        // draw batman?
+        mvp = proj * view * batmanObj.getGlobalTransformMatrix();
+
+        s2.run();
+        s2.setUniform("mvp", mvp);
+        s2.setUniform("tex0", 0);
+        vao_batman.bind(0);
+        glDrawArrays(GL_TRIANGLES, 0, vao_batman.getVertexCount());
+        vao_batman.unbind();
 
         ng.context_SDL.swapBuffers();
         frameTime.end();
