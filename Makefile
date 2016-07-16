@@ -29,5 +29,8 @@ window:
 basic_refactored:
 	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) $(LINK)
 
+basic:
+	$(CC) $(CFLAGS) stuff/examples/$@.cpp -o main $(LINK_OBJ) $(LINK)
+
 Math: test
 

@@ -1,17 +1,16 @@
 #ifndef DEBUG_CAMERA_HPP
 #define DEBUG_CAMERA_HPP
 
-#include "../Transform.hpp"
-
 namespace rcn3d {
 
 enum CameraDirection {
     FORWARD, BACKWARD, LEFT, RIGHT
 };
 
-class Camera: public Transform
+class DebugCamera 
 {
 public:
+    glm::vec3 position = glm::vec3(3.0f, 0.0f, 10.0f);
     glm::vec3 front = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
     glm::vec3 right;
@@ -19,18 +18,18 @@ public:
 
     float yaw = -90.0f;
     float pitch = 0.0f;
-    float mvSpeed = 6.0f;
+    float mvSpeed = 4.0f;
     float sens = 0.05f;
 
-    Camera() {
-        updateCameraVectors();
+    DebugCamera() {
+        update_camera_vectors();
     }
 
-    glm::mat4 getViewMatrix() {
-        return glm::lookAt(getPosition(), getPosition() + front, up);
+    glm::mat4 get_view_matrix() {
+        return glm::lookAt(position, position + front, up);
     }
 
-    void processMouse(float xoff, float yoff) {
+    void process_mouse(float xoff, float yoff) {
         xoff *= sens, yoff *= sens;
         yaw += xoff, pitch += yoff;
 
@@ -39,18 +38,18 @@ public:
         if(pitch < -89.0f)
             pitch = -89.0f;
 
-        updateCameraVectors();
+        update_camera_vectors();
     }
-
-    void processKeyboard(CameraDirection dir, float delta) {
+    
+    void process_keyboard(CameraDirection dir, float delta) {
         float vel = mvSpeed * delta;
-        if(dir == FORWARD)  translate(vel*front);
-        if(dir == BACKWARD) translate(-vel*front);
-        if(dir == LEFT)     translate(-vel*right);
-        if(dir == RIGHT)    translate(vel*right);
+        if(dir == FORWARD)  position += front * vel;
+        if(dir == BACKWARD) position -= front * vel;
+        if(dir == LEFT)     position -= right * vel;
+        if(dir == RIGHT)    position += right * vel;
     }
 
-    void updateCameraVectors() {
+    void update_camera_vectors() {
         glm::vec3 frnt;
         frnt.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         frnt.y = sin(glm::radians(pitch));
