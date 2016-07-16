@@ -27,7 +27,7 @@ public:
         return ng;
     }
 
-    SDL_Context           context_SDL;
+    static SDL_Context           context_SDL;
     static TextureLoader& txl;
     static Renderer&      ren;
 

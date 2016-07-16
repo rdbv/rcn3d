@@ -1,23 +1,16 @@
 CC= g++
 CFLAGS= -std=c++11 -Wall -O0
 LINK= -lGL -lGLEW -lSDL2 -lfreeimage 
-LINK_OBJ= bin/SDL_Context.o bin/Engine.o \
+LINK_OBJ= bin/SDL_Context.o \
 		  bin/Shader.o bin/ShaderProgram.o \
-		  bin/TextureLoader.o bin/Renderer.o \
-		  bin/Transform.o
 
-all: SDL_Context Shader ShaderProgram Engine \
-	 TextureLoader Transform Renderer \
+all: SDL_Context Shader ShaderProgram \
 	 test 
 
 test:
-	$(CC) $(CFLAGS) $@.cpp -o main $(LINK_OBJ) -lGL -lGLEW -lSDL2 -lfreeimage 
-
-test1:
-	$(CC) $(CFLAGS) $@.cpp -o main  -lassimp
-
-Engine:
-	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o 
+	$(CC) $(CFLAGS) $@.cpp -o main \
+		$(LINK_OBJ) \
+		-lGL -lGLEW -lSDL2 -lfreeimage
 
 SDL_Context:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
@@ -26,17 +19,6 @@ Shader:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
 
 ShaderProgram:
-	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
-	make Renderer
-
-
-TextureLoader:
-	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
-
-Transform:
-	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
-
-Renderer:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
 
 # Other

@@ -1,11 +1,9 @@
 #ifndef SHADER_PROGRAM_HPP
 #define SHADER_PROGRAM_HPP
 
+#define GLEW_STATIC
 #include "Shader.hpp"
-
-#include "header_only/SDL_GLEW.hpp"
 #include "header_only/Math.hpp"
-
 #include <glm/gtc/type_ptr.hpp>
 
 #include <GL/glew.h>
@@ -16,8 +14,7 @@
 
 namespace rcn3d {
 
-class ShaderProgram 
-{
+class ShaderProgram {
 public:
     ShaderProgram() = delete;
     ShaderProgram(const std::string&, const std::string&);

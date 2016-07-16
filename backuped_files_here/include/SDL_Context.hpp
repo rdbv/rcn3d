@@ -1,7 +1,17 @@
 #ifndef SDL_WINDOW_HPP
 #define SDL_WINDOW_HPP
 
-#include "header_only/SDL_GLEW.hpp"
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#elif _WIN32
+#include <SDL/SDL.h>
+#else
+#endif
+
+#define GLEW_STATIC
+#include <GL/glew.h>
+
+
 #include "header_only/Math.hpp"
 
 #include <string>

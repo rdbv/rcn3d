@@ -12,12 +12,14 @@ static rcn3d::FrameTime ft;
 
 static glm::mat4 proj, view, mvp;
 
+/* Just init engine, set window size and win pos */
 void init_engine(glm::vec2 windowSize, glm::vec2 windowPos) {
     rcn3d::SDL_Settings st;
     st.windowSize = windowSize;
     st.windowPos = windowPos;
     proj = glm::perspective(glm::radians(45.0f), st.windowSize.x/st.windowSize.y, 0.1f, 100.0f);
-
+    
+    /* Setup projection matrix */
     rn.setProjMatrix(glm::perspective(glm::radians(45.0f), st.windowSize.x/st.windowSize.y, 0.1f, 100.0f));
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -134,3 +136,4 @@ int main(int argc, char** argv) {
     }
 
 }
+
