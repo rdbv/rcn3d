@@ -1,53 +1,36 @@
 #include <cstdio>
 #include <map>
 
-#include "../../include/SDL_Context.hpp"
-#include "../../include/ShaderProgram.hpp"
 #include "../../include/header_only/Math.hpp"
 #include "../../include/header_only/Camera.hpp"
 #include "../../include/header_only/FrameTime.hpp"
+#include "../../include/header_only/Window.hpp"
+#include "../../include/header_only/Shader.hpp"
 
 using namespace rcn3d;
 
-static SDL_Context ctx;
-static glm::mat4 p, v, m;
+static Window win;
 static DebugCamera cam;
 static FrameTime ft;
+static ShaderProgram sprog0;
+
 static std::map<Uint32, bool> keys;
+static glm::mat4 p, v;
 
-void init_engine(glm::vec2 window_size = glm::vec2(800, 800), 
-                 glm::vec2 window_pos  = glm::vec2(1950, 0) ) {
-    SDL_Settings set;
-    set.windowSize = window_size, set.windowPos = window_pos;
-    p = glm::perspective(glm::radians(45.0f), set.windowSize.x/set.windowSize.y, 0.1f, 100.0f);
-    
-    /* SLD_SetRelativeMouseMode(SDL_TRUE) */
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+void init() {
+    win.init_sdl();
+    win.init_gl();
 
-    ctx.initContext(set);
+    if(sprog0.load_shader("stuff/shaders/gles_300/test0.vs",
+                          "stuff/shaders/gles_300/test0.fs") == false)
+        exit(0);
+
+    sprog0.add_uniform("mvp", true);
+
+    auto i_s = win.get_init_size();
+    p = glm::perspective(glm::radians(45.0f), i_s.x/i_s.y, 0.1f, 100.0f);
 }
 
-bool process_events() {
-    SDL_Event ev;
-
-    while(SDL_PollEvent(&ev)) {
-        if(ev.type == SDL_KEYDOWN) keys[ev.key.keysym.sym] = true;
-        if(ev.type == SDL_KEYUP)   keys[ev.key.keysym.sym] = false;
-        if(ev.type == SDL_MOUSEMOTION) {
-            float x = ev.motion.xrel, y = -ev.motion.yrel;
-            cam.process_mouse(x, y);
-        }
-    }
-    
-    if(keys['q']) return false;
-
-    if(keys['w']) cam.process_keyboard(FORWARD, ft.getDeltaTime());
-    if(keys['s']) cam.process_keyboard(BACKWARD, ft.getDeltaTime());
-    if(keys['a']) cam.process_keyboard(LEFT, ft.getDeltaTime());
-    if(keys['d']) cam.process_keyboard(RIGHT, ft.getDeltaTime());
-
-    return true;
-}
 
 GLuint get_triangle() {
     std::vector<glm::vec3> vx_data {
@@ -72,40 +55,33 @@ GLuint get_triangle() {
     return vbo;
 }
 
-
 int main() {
-    init_engine();
+    init();
 
-    ShaderProgram s0("stuff/shaders/test0.vs", "stuff/shaders/test0.fs");
-    s0.addUniform("mvp");
+    float t = 0;
 
-    GLuint tri = get_triangle();
-    glm::mat4 mat_tri0 = glm::translate(glm::mat4(1), glm::vec3(0, 0, 0));
+    auto triangle = get_triangle();
+    glm::mat4 triangle_m = glm::translate(glm::mat4(1), glm::vec3(0));
 
-    while(process_events()) {
+    while(process_events(keys, cam, ft, t)) {
         ft.begin();
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(0.30, 0, 0, 0);
 
         v = cam.get_view_matrix();
 
-        s0.run();
-        
-        m = p * v * mat_tri0;
-        s0.setUniform("mvp", m);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.30, 0.0, 0.0, 0);
 
-        glBindBuffer(GL_ARRAY_BUFFER, tri);
+        sprog0.run();
+        sprog0.set_uniform("mvp", p*v*triangle_m);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, triangle);
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        ctx.swapBuffers();
 
         ft.end();
-
+        SDL_GL_SwapWindow(win.get_win_handle());
     }
-
 }
-
 

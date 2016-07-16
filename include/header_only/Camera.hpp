@@ -1,6 +1,8 @@
 #ifndef DEBUG_CAMERA_HPP
 #define DEBUG_CAMERA_HPP
 
+#include <glm/glm.hpp>
+
 namespace rcn3d {
 
 enum CameraDirection {
