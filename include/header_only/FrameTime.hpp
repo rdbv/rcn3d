@@ -61,7 +61,7 @@ private:
     Uint32  delta;
 
     int     currentFrame = 0;
-    static const int   numberOfSamples = 10;
+    static const int   numberOfSamples = 8;
     std::array <Uint32, numberOfSamples> frameTimes;
 };
 
