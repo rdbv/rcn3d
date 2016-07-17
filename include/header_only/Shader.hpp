@@ -1,7 +1,7 @@
 #ifndef SHADER_HPP
 #define SHADER_HPP
 
-#include <GL/glew.h>
+#include "SDL_GLEW.hpp"
 #include <vector>
 #include <cstdio>
 #include <string>

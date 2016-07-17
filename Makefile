@@ -1,5 +1,5 @@
 CC= g++
-CFLAGS= -std=c++11 -Wall -O0
+CFLAGS= -std=c++11 -Wall -O3
 LINK= -lGL -lGLEW -lSDL2 -lfreeimage 
 LINK_OBJ= bin/Chunk.o
 

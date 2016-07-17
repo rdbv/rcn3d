@@ -1,12 +1,7 @@
 #ifndef RCN3D_FRAMETIME_HPP
 #define RCN3D_FRAMETIME_HPP
 
-#ifdef __linux__
-#include <SDL2/SDL.h>
-#elif _WIN32
-#include <SDL/SDL.h>
-#else
-#endif
+#include "SDL_GLEW.hpp"
 
 #include <array>
 #include <algorithm>
@@ -66,5 +61,6 @@ private:
 };
 
 }
+
 
 #endif //RCN3D_FRAMETIME_HPP

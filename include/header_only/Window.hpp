@@ -8,6 +8,10 @@
 #include "FrameTime.hpp"
 #include "Camera.hpp"
 
+#include <map>
+
+typedef std::map<Uint32, bool> KeyMap;
+
 #define WINDOW_SIZE glm::vec2(1300, 700)
 #define WINDOW_POS  glm::vec2(50, 0)
 #define WINDOW_NAME "OpenGL"
@@ -27,7 +31,7 @@ public:
         win = SDL_CreateWindow(window_name.c_str(),
                 window_pos.x, window_pos.y,
                 window_size.x, window_size.y,
-                SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+                SDL_WINDOW_OPENGL);
     
         SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -35,7 +39,8 @@ public:
             return false;
 
         ctx = SDL_GL_CreateContext(win);
-        
+       
+        SDL_GL_SetSwapInterval(1);
         GLenum glew_stat = glewInit();
         if(glew_stat != GLEW_OK)
             return false;
@@ -44,10 +49,15 @@ public:
     }
 
     void init_gl() {
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
-        SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-        glEnable(GL_MULTISAMPLE);
+        //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+        //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
+        //SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+        //glEnable(GL_MULTISAMPLE);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
     }
@@ -78,9 +88,9 @@ private:
 
 };
 
-bool process_events(std::map<Uint32, bool>& keys, 
+bool process_events(KeyMap& keys, 
                     DebugCamera& cam, 
-                    FrameTime& ft, float &t) {
+                    FrameTime& ft) {
 
     SDL_Event ev;
     while(SDL_PollEvent(&ev)) {
@@ -102,9 +112,9 @@ bool process_events(std::map<Uint32, bool>& keys,
     if(keys['s']) cam.process_keyboard(BACKWARD, ft.getDeltaTime());
     if(keys['a']) cam.process_keyboard(LEFT,     ft.getDeltaTime());
     if(keys['d']) cam.process_keyboard(RIGHT,    ft.getDeltaTime());
-    if(keys['t']) t += 0.1;
-    if(keys['y']) t -= 0.1;
+
     return quit;    
+
 }
 
 #endif
