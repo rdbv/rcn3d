@@ -111,13 +111,11 @@ void Chunk::generate() {
 }
 
 void Chunk::render() {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_BYTE, GL_FALSE, 0, 0);
     glDrawArrays(GL_TRIANGLES, 0, vx_count);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 

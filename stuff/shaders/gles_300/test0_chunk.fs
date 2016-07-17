@@ -1,20 +1,17 @@
 #version 300 es
 
-flat in  ivec4 pos_i;
+in  mediump vec4 texcoord;
 out mediump vec4 color;
 
+uniform sampler2D tex_mc;
+
 void main() {
-    if(pos_i.w == 0)
-        color = vec4(0, 1.0, 0, 0);
-    if(pos_i.w == 1)
-        color = vec4(0, 0, 1.0, 0);
-    if(pos_i.w == 2)
-        color = vec4(1, 0, 0, 0);
-    if(pos_i.w == 3)
-        color = vec4(0.5, 0.5, 0, 0);
-    if(pos_i.w == 4)
-        color = vec4(0.25, 0.5, 0, 0);
-    if(pos_i.w == 5)
-        color = vec4(0.50, 0.0, 0.25, 0);
+    mediump vec2 coord2d;
+    if(texcoord.w < 0.0)
+        coord2d = vec2((fract(texcoord.x) + texcoord.w) / 16.0, texcoord.z);
+    else
+        coord2d = vec2((fract(texcoord.x + texcoord.z) + texcoord.w) / 16.0, -texcoord.y);
+
+    color = texture2D(tex_mc, coord2d);
 }
 
