@@ -1,6 +1,7 @@
 
 #include "../../include/Chunk.hpp"
 #include "../../include/TextureLoader.hpp"
+#include "../../include/PerlinsMap.hpp"
 
 #include "../../include/header_only/Window.hpp"
 #include "../../include/header_only/Shader.hpp"
@@ -19,6 +20,8 @@ static DebugCamera cam;
 static TextureLoader tex_loader;
 
 static glm::mat4 p, v;
+
+static rcn3d::PerlinsMap perlinsMap;
 
 void init_engine() {
     win.init_sdl();
@@ -48,9 +51,14 @@ void load_shaders() {
     s_prog_chunk_tex.add_uniform("tex_mc", true);
 }
 
-int main() {
+void init_map() {
+    perlinsMap.generateMap(100, 100, 5.0f);
+}
+
+int main(int argc, char** argv) {
     init_engine();
     load_shaders();
+    init_map();
 
 
     Chunk c0;

@@ -29,7 +29,7 @@ public:
         win_siz = window_size, win_pos = window_pos;
 
         win = SDL_CreateWindow(window_name.c_str(),
-                window_pos.x, window_pos.y,
+                SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                 window_size.x, window_size.y,
                 SDL_WINDOW_OPENGL);
     
