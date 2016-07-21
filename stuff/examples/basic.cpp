@@ -52,7 +52,7 @@ void load_shaders() {
 }
 
 void init_map() {
-    perlinsMap.generateMap(100, 100, 5.0f);
+    perlinsMap.generateMap(640, 480, 10.0f, 8, 0.5f, 2.0f);
 }
 
 int main(int argc, char** argv) {
