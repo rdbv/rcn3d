@@ -15,8 +15,12 @@ public:
 
     void generateMap(unsigned int w, unsigned int h, float s, int o, float p, float l);
 
+	unsigned int getHeight() {return height;}
+	unsigned int getWidth() {return width;}
+	std::vector <glm::ivec3>& getMapData() {return mapData;}
+
 private:
-    std::vector <int> mapData;
+	std::vector <glm::ivec3> mapData;
     unsigned int width;
     unsigned int height;
 	float scale;
