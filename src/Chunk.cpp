@@ -2,8 +2,9 @@
 
 using namespace rcn3d;
 
-void Chunk::init_chunk() {
+void Chunk::init_chunk(float x, float y, float z) {
     glGenBuffers(1, &vbo);
+    chunk_matrix = glm::translate(glm::mat4(1), glm::vec3(x, y, z));
 }
 
 void Chunk::destroy_chunk() {
