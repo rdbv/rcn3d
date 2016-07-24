@@ -48,7 +48,7 @@ void rcn3d::PerlinsMap::generateMap(unsigned int w, unsigned int h, float s, int
 
 			int lerpValue = static_cast<int>(glm::lerp(0.0f, 255.0f, noiseHeight));
 			//can.setColor(x, y, lerpValue, lerpValue, lerpValue);
-			mapData.emplace_back(x, y, lerpValue);
+			mapData.emplace_back(x, lerpValue, y);
         }
     }
     //can.save("perlin_noise_new.bmp");

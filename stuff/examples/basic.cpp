@@ -14,10 +14,11 @@ static ShaderProgram s_prog0, s_prog_chunk_dbg, s_prog_chunk_tex;
 
 static Texture tex_mc0;
 
-static KeyMap keys;
-static FrameTime ft;
-static DebugCamera cam;
-static TextureLoader tex_loader;
+static KeyMap           keys;
+static FrameTime        ft;
+static DebugCamera      cam;
+static TextureLoader    tex_loader;
+static PerlinsMap       perlinMap;
 
 static glm::mat4 p, v;
 
@@ -51,46 +52,52 @@ void load_shaders() {
     s_prog_chunk_tex.add_uniform("tex_mc", true);
 }
 
-int main() {
+int main(int argc, char** argv) {
     init_engine();
     load_shaders();
+
+    perlinMap.generateMap(10, 10, 2.0f, 8, 0.5f, 2.0f);
+    const std::vector <glm::ivec3> mapData = perlinMap.getMapData();
 
     /* wspolrzedne sa ok */
     Chunk c0;
     c0.init_chunk(0, 0, 0); 
-    Chunk c1;
-    c1.init_chunk(8, 0, 0); 
-    Chunk c2;
-    c2.init_chunk(16, 0, 0);
+//    Chunk c1;
+//    c1.init_chunk(8, 0, 0);
+//    Chunk c2;
+//    c2.init_chunk(16, 0, 0);
 
-    for(int z=0;z<CZ;++z) {
-        for(int x=0;x<CX;++x) {
-            c0.set_block_type(x, 0, z, BLOCK_DIRT);
-        }
+    for(const auto& i : mapData) {
+        c0.set_block_type(i.x % CX, i.y % CY, i.z % CZ, BLOCK_DIRT);
     }
+//    for(int z=0;z<CZ;++z) {
+//        for(int x=0;x<CX;++x) {
+//            c0.set_block_type(x, 0, z, BLOCK_DIRT);
+//        }
+//    }
 
-    for(int z=0;z<CZ;++z) {
-        for(int x=0;x<CX;++x) {
-            c1.set_block_type(x, 0, z, BLOCK_TREE_UP);
-        }
-    }
-    
-    for(int z=0;z<CZ;++z) {
-        for(int x=0;x<CX;++x) {
-            c2.set_block_type(x, 0, z, BLOCK_BRICKS);
-        }
-    }
+//    for(int z=0;z<CZ;++z) {
+//        for(int x=0;x<CX;++x) {
+//            c1.set_block_type(x, 0, z, BLOCK_TREE_UP);
+//        }
+//    }
+//
+//    for(int z=0;z<CZ;++z) {
+//        for(int x=0;x<CX;++x) {
+//            c2.set_block_type(x, 0, z, BLOCK_BRICKS);
+//        }
+//    }
 
-    // Dziura w ceglach po srodku
-    c2.set_block_type(CX/2, 0, CZ/2, BLOCK_AIR);
-    // Latajace drewno, tutaj jest poczatek chunka
-    //
-    c1.set_block_type(0, 4, 0, BLOCK_TREE_UP);
-
-    // Generuj z macierzy
+//    // Dziura w ceglach po srodku
+//    c2.set_block_type(CX/2, 0, CZ/2, BLOCK_AIR);
+//    // Latajace drewno, tutaj jest poczatek chunka
+//    //
+//    c1.set_block_type(0, 4, 0, BLOCK_TREE_UP);
+//
+//    // Generuj z macierzy
     c0.generate();
-    c1.generate();
-    c2.generate();
+//    c1.generate();
+//    c2.generate();
 
     while(process_events(keys, cam, ft)) {
         ft.begin();
@@ -106,17 +113,17 @@ int main() {
 
         c0.render();
 
-        s_prog_chunk_tex.set_uniform("mvp", p*v*c1.getMatrix());
+//        s_prog_chunk_tex.set_uniform("mvp", p*v*c1.getMatrix());
 
-        c1.render();
-       
-        s_prog_chunk_tex.set_uniform("mvp", p*v*c2.getMatrix());
-        c2.render();
+//        c1.render();
+//
+//        s_prog_chunk_tex.set_uniform("mvp", p*v*c2.getMatrix());
+//        c2.render();
 
 
         ft.end();
         SDL_GL_SwapWindow(win.get_win_handle());
     }
-
+    return 0;
 }
 

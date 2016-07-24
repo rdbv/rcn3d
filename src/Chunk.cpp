@@ -1,5 +1,7 @@
 #include "../include/Chunk.hpp"
 
+#include <cstring>
+
 using namespace rcn3d;
 
 void Chunk::init_chunk(float x, float y, float z) {

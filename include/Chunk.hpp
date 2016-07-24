@@ -8,9 +8,9 @@
 
 typedef glm::tvec4<GLbyte> byte4;
 
-#define CX 8
-#define CY 8
-#define CZ 8
+#define CX 10
+#define CY 10
+#define CZ 10
 
 enum BlockType {
     BLOCK_AIR = 0,
