@@ -1,7 +1,7 @@
 CC= g++
 CFLAGS= -std=c++11 -Wall -O3
 LINK= -lGL -lGLEW -lSDL2 -lfreeimage 
-LINK_OBJ= bin/Chunk.o bin/TextureLoader.o
+LINK_OBJ= bin/Chunk.o bin/TextureLoader.o bin/PerlinsMap.o
 
 all: Chunk TextureLoader test
 
@@ -13,6 +13,9 @@ test:
 
 Chunk:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/Chunk.o 
+
+PerlinsMap:
+	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/$@.o
 
 TextureLoader:
 	$(CC) $(CFLAGS) -c src/$@.cpp -o bin/TextureLoader.o

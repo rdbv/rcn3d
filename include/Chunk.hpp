@@ -8,9 +8,29 @@
 
 typedef glm::tvec4<GLbyte> byte4;
 
-#define CX 1
-#define CY 1
-#define CZ 1
+#define CX 8
+#define CY 8
+#define CZ 8
+
+enum BlockType {
+    BLOCK_AIR = 0,
+    BLOCK_DIRT,
+    BLOCK_DIRT_WITH_GRASS,
+    BLOCK_GRASS,
+    BLOCK_LEAF,
+    BLOCK_WOOD,
+    BLOCK_STONE,
+    BLOCK_SAND,
+    BLOCK_WATER,
+    BLOCK_GLASS,
+    BLOCK_BRICKS,
+    BLOCK_CARBON,
+    BLOCK_TREE_UP,
+    BLOCK_WHITE, 
+    BLOCK_BLACK,
+    BLOCK_YX,
+    BLOCK_END,
+};
 
 namespace rcn3d {
 
@@ -24,11 +44,14 @@ public:
     void generate();
     void render();
 
+    void set_block_type(std::size_t, std::size_t, std::size_t, BlockType);
+
 	glm::mat4& getMatrix() {return chunk_matrix;}
 
 private:
     GLuint vbo;
     GLuint vx_count;
+    BlockType blocks[CX][CY][CZ];
 	glm::mat4 chunk_matrix;
 };
 
