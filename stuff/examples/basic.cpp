@@ -7,10 +7,11 @@
 #include "../../include/header_only/Shader.hpp"
 #include "../../include/header_only/Camera.hpp"
 #include "../../include/header_only/FrameTime.hpp"
+#include "../../include/header_only/BitmapFont.hpp"
 
 static Window win;
 
-static ShaderProgram s_prog0, s_prog_chunk_dbg, s_prog_chunk_tex;
+static ShaderProgram s_prog0, s_prog_chunk_dbg, s_prog_chunk_tex, s_bitmap_font;
 
 static Texture tex_mc0;
 
@@ -33,16 +34,19 @@ void init_engine() {
 }
 
 void load_shaders() {
-    if(!s_prog0.load_shader("stuff/shaders/gles_300/test0.vs",
-                            "stuff/shaders/gles_300/test0.fs"))
+    if(!s_prog0.load_shader("stuff/shaders/gles_300_to_330/test0.vs",
+                            "stuff/shaders/gles_300_to_330/test0.fs"))
         exit(0);
 
-    if(!s_prog_chunk_dbg.load_shader("stuff/shaders/gles_300/test0_chunk_debug.vs",
-                                     "stuff/shaders/gles_300/test0_chunk_debug.fs"))
+    if(!s_prog_chunk_dbg.load_shader("stuff/shaders/gles_300_to_330/test0_chunk_debug.vs",
+                                     "stuff/shaders/gles_300_to_330/test0_chunk_debug.fs"))
         exit(0);
 
-    if(!s_prog_chunk_tex.load_shader("stuff/shaders/gles_300/test0_chunk.vs",
-                                     "stuff/shaders/gles_300/test0_chunk.fs"))
+    if(!s_prog_chunk_tex.load_shader("stuff/shaders/gles_300_to_330/test0_chunk.vs",
+                                     "stuff/shaders/gles_300_to_330/test0_chunk.fs"))
+        exit(0);
+    if(!s_bitmap_font.load_shader("stuff/shaders/font0.vs",
+                                  "stuff/shaders/font0.fs"))
         exit(0);
 
     s_prog0.add_uniform("mvp", true);
@@ -56,12 +60,15 @@ int main(int argc, char** argv) {
     init_engine();
     load_shaders();
 
+    rcn3d::BitmapFont bmf1;
+    bmf1.load("stuff/fonts/CalibriBitmap2.fnt", &tex_loader, &s_bitmap_font, win.get_win_handle());
+
     perlinMap.generateMap(10, 10, 2.0f, 8, 0.5f, 2.0f);
     const std::vector <glm::ivec3> mapData = perlinMap.getMapData();
 
     /* wspolrzedne sa ok */
     Chunk c0;
-    c0.init_chunk(0, 0, 0); 
+    c0.init_chunk(0, 0, 0);
 //    Chunk c1;
 //    c1.init_chunk(8, 0, 0);
 //    Chunk c2;
@@ -109,6 +116,7 @@ int main(int argc, char** argv) {
 
         // Draw chunq
         s_prog_chunk_tex.run();
+        tex_mc0.bind(GL_TEXTURE_2D);
         s_prog_chunk_dbg.set_uniform("mvp", p*v*c0.getMatrix());
 
         c0.render();
@@ -120,7 +128,8 @@ int main(int argc, char** argv) {
 //        s_prog_chunk_tex.set_uniform("mvp", p*v*c2.getMatrix());
 //        c2.render();
 
-
+        bmf1.drawString("Your SPECIAL SECRET KEY:\n"
+                        "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 42, 420);
         ft.end();
         SDL_GL_SwapWindow(win.get_win_handle());
     }
